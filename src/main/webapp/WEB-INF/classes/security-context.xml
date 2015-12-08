@@ -1,0 +1,81 @@
+<beans xmlns:sec="http://www.springframework.org/schema/security"
+       xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+       xmlns:mvc="http://www.springframework.org/schema/mvc"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:tx="http://www.springframework.org/schema/tx"
+       xsi:schemaLocation="
+                                http://www.springframework.org/schema/security
+                                http://www.springframework.org/schema/security/spring-security-4.0.xsd
+                                http://www.springframework.org/schema/mvc 
+                                http://www.springframework.org/schema/mvc/spring-mvc-4.0.xsd
+                                http://www.springframework.org/schema/beans 
+                                http://www.springframework.org/schema/beans/spring-beans-4.0.xsd
+                                http://www.springframework.org/schema/context 
+                                http://www.springframework.org/schema/context/spring-context-4.0.xsd
+                                http://www.springframework.org/schema/tx
+                                http://www.springframework.org/schema/tx/spring-tx-3.0.xsd" >
+    
+
+    <sec:http auto-config="true">
+
+    </sec:http>
+
+    <sec:authentication-manager>
+        <sec:authentication-provider>
+            <sec:user-service>
+                <sec:user name="user" password="password" authorities="ROLE_USER" />
+            </sec:user-service>
+        </sec:authentication-provider>
+    </sec:authentication-manager>
+    
+    
+    <!--    FRAGMENT ODPOWIEDZIALNY ZA UWIERZYTELNIANIE UŻYTKOWNIKÓW, ŁĄCZENIE SIĘ Z BAZĄ DANYCH-->
+    <sec:authentication-manager>
+        <sec:authentication-provider>
+            <sec:jdbc-user-service data-source-ref="dataSource"
+                                   users-by-username-query=
+     "SELECT name, password, nickName FROM persons WHERE name=?"
+                                   authorities-by-username-query=
+     "SELECT ‘ROLE_USER’ FROM persons WHERE name =?  " />
+        </sec:authentication-provider>
+    </sec:authentication-manager>
+    
+    <!--        JPA DIALECT-->
+    <bean id="jpaDialect" class="org.springframework.orm.jpa.vendor.HibernateJpaDialect" />
+    
+    <!--        KONFIGURACJA POŁĄCZENIA Z BAZĄ DANYCH    -->
+    <bean id="entityManagerFactory"
+          class="org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean">
+        <property name="dataSource" ref="dataSource" />
+        <property name="packagesToScan" value="maku.mvc" />
+        <property name="jpaDialect" ref="jpaDialect" />
+        <property name="jpaVendorAdapter">
+            <bean class="org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter">
+                <property name="showSql" value="false" />
+                <property name="databasePlatform" value="org.hibernate.dialect.MySQLDialect" />
+            </bean>
+        </property>
+        <property name="jpaProperties">
+            <props>
+                <prop key="hibernate.hbm2ddl.auto">update</prop>
+            </props>
+        </property>
+    </bean>
+    <bean class="org.springframework.orm.jpa.support.PersistenceAnnotationBeanPostProcessor" />
+    <bean class="org.springframework.dao.annotation.PersistenceExceptionTranslationPostProcessor" />
+    
+    <!--        TRANSACTION MANAGER ( WSZYSTKO ODBYWA SIĘ W RAMACH TRANSAKCJI )-->
+    <bean id="transactionManager" class="org.springframework.orm.jpa.JpaTransactionManager">
+        <property name="entityManagerFactory" ref="entityManagerFactory" />
+    </bean>
+       
+    <!--        DATA SOURCE-->
+    <bean id="dataSource" class="org.springframework.jdbc.datasource.DriverManagerDataSource">
+        <property name="driverClassName" value="com.mysql.jdbc.Driver" />
+        <property name="url" value="jdbc:mysql://localhost:3306/springbaza" />
+        <property name="username" value="user" />
+        <property name="password" value="password" />
+    </bean>
+
+</beans>
