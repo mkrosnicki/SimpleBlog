@@ -19,17 +19,20 @@
     <context:annotation-config />
     <!--    POZWALA NA AUTOMATYCZNĄ OBSŁUGĘ ADNOTACJI SŁUŻĄCYCH DO WALIDACJI PÓL-->
     <mvc:annotation-driven />
+    <!--    POZWALA DODAWAĆ CSS I JS DO JSP-->
+    <mvc:resources mapping="/resources/**" location="/resources/"  
+	cache-period="31556926"/>
     
     
     <!--    DOPASOWUJE WIDOK W ZALEŻNOSCI OD NAZWY ZWRÓCONEJ PRZEZ KONTROLER ( JEŚLI KONTROLLER POPROSI O main SZUKANY BEDZIE /WEB-INF/views/main.jsp-->
-    <bean class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+<!--    <bean class="org.springframework.web.servlet.view.InternalResourceViewResolver">
         <property name="prefix">
             <value>/WEB-INF/views/</value>
         </property>
         <property name="suffix">
             <value>.jsp</value>
         </property>
-    </bean>
+    </bean>-->
     
     <!--    JPA VENDOR ADAPTER-->
     <bean id="jpaVendorAdapter" class="org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter">
@@ -78,6 +81,18 @@
     <tx:annotation-driven />
     
     
+    <!--    APACHE TILES-->
+    <bean id="tilesConfigurer" class="org.springframework.web.servlet.view.tiles3.TilesConfigurer">
+        <property name="definitions">
+            <list>
+                <value>/WEB-INF/tiles/general.xml</value>
+            </list>
+        </property>
+    </bean>
+    
+    <bean id="viewResolver" class="org.springframework.web.servlet.view.UrlBasedViewResolver">
+        <property name="viewClass" value="org.springframework.web.servlet.view.tiles3.TilesView"/>
+    </bean>
     
     
 </beans>

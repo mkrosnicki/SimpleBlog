@@ -9,7 +9,7 @@ public class HomeController {
     
     @RequestMapping(value = "/")
     public String showHomePage(Map<String, Object> model) {
-        return "home";
+        return "common";
     }
     
 }
