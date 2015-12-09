@@ -21,23 +21,23 @@
 
     </sec:http>
 
-    <sec:authentication-manager>
+<!--    <sec:authentication-manager>
         <sec:authentication-provider>
             <sec:user-service>
                 <sec:user name="user" password="password" authorities="ROLE_USER" />
             </sec:user-service>
         </sec:authentication-provider>
     </sec:authentication-manager>
-    
+    -->
     
     <!--    FRAGMENT ODPOWIEDZIALNY ZA UWIERZYTELNIANIE UŻYTKOWNIKÓW, ŁĄCZENIE SIĘ Z BAZĄ DANYCH-->
     <sec:authentication-manager>
         <sec:authentication-provider>
             <sec:jdbc-user-service data-source-ref="dataSource"
                                    users-by-username-query=
-     "SELECT name, password, nickName FROM persons WHERE name=?"
+     "select username,password, enabled from users where username=?"
                                    authorities-by-username-query=
-     "SELECT ‘ROLE_USER’ FROM persons WHERE name =?  " />
+     "select username, authority from user_roles where username=?" />
         </sec:authentication-provider>
     </sec:authentication-manager>
     
@@ -58,7 +58,8 @@
         </property>
         <property name="jpaProperties">
             <props>
-                <prop key="hibernate.hbm2ddl.auto">update</prop>
+                <prop key="hibernate.hbm2ddl.auto">create-drop</prop>
+                <prop key="hibernate.hbm2ddl.import_files">import.sql</prop>
             </props>
         </property>
     </bean>

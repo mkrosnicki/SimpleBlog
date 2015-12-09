@@ -31,35 +31,23 @@ public class UserController {
     }
     
     @RequestMapping(value = "/adduser", method = RequestMethod.POST)
-    public String validNewPerson(@Valid User person, BindingResult bindingResult) {
+    public String validNewPerson(@Valid User user, BindingResult bindingResult) {
         if (bindingResult.hasErrors())
             return "addedituser";
-        dao.addPerson(person);
+        dao.addUser(user);
         return "redirect:/users";
     }
     
     @RequestMapping(value = "/deleteuser/{userId}")
     public String deletePerson(@PathVariable("userId") Long id) {
-        dao.deletePerson(id);
+        dao.deletePerson(null);
         return "redirect:/users";
     }
     
     @RequestMapping(value = "editperson/{userId}", method = RequestMethod.GET)
     public String editPersonPage(@PathVariable("userId") Long id, Model model) {
-        model.addAttribute("person", dao.getPersonById(id));
+        model.addAttribute("person", dao.getUserByName(null));
         return "addedituser";
     }
     
-    @RequestMapping(value = "editperson/{userId}", method = RequestMethod.POST)
-    public String editPerson(@PathVariable("userId") Long id, 
-            @Valid User p, 
-            BindingResult result) {
-        if (result.hasErrors()) {
-            return "addedituser/" + id;
-        } else {
-            p.setId(id);
-            dao.savePerson(p);
-            return "redirect:/users";
-        }
-    }
 }

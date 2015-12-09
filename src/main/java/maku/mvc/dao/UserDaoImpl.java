@@ -23,24 +23,20 @@ public class UserDaoImpl {
         return (List<User>) em.createNamedQuery("Person.findAll").getResultList();
     }
     
-    public User getPersonById(Long id) {
-        return em.find(User.class, id);
+    public User getUserByName(String name) {
+        return em.find(User.class, name);
     }
     
-    public void addPerson(User person) {
-        em.persist(person);
+    public void addUser(User user) {
+        em.persist(user);
     }
     
-    public void savePerson(User person) {
-        em.merge(person);
+    public void saveUser(User user) {
+        em.merge(user);
     }
     
     public void deletePerson(User person) {
-        em.remove(getPersonById(person.getId()));
-    }
-    
-    public void deletePerson(Long id) {
-        em.remove(getPersonById(id));
+        em.remove(getUserByName(person.getName()));
     }
     
 }
