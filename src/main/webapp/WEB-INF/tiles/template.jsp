@@ -43,7 +43,7 @@
 
                 <!-- Blog Entries Column -->
                 <div class="col-md-8">
-                    
+
                     <tiles:insertAttribute name="header" />
 
                     <tiles:insertAttribute name="body" />
@@ -81,6 +81,12 @@
 
         <!-- Bootstrap Core JavaScript -->
         <script src="<c:url value="/resources/js/bootstrap.min.js"/>"></script>
+
+        <script>
+            function formSubmit() {
+                document.getElementById("logoutForm").submit();
+            }
+        </script>
 
     </body>
 

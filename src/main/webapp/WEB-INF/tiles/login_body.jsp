@@ -13,4 +13,7 @@
             <input type="submit" class="btn btn-default" value="Zaloguj" >
         </span>
     </form>
+    <c:if test="${error ne null}">
+        <div class="alert alert-danger">${error}</div>
+    </c:if>
 </div>

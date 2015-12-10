@@ -4,21 +4,27 @@
 
 <div class="well">
     <h4>Panel logowania</h4>
-    
+    <form action="${pageContext.request.contextPath}/logout" method="post" id="logoutForm">
+        <input type="hidden"
+               name="${_csrf.parameterName}"
+               value="${_csrf.token}" />
+    </form>
     <c:choose>
-        <c:when test="${true}">
-            Jesteś zalogowany jako <c:out value="${1}" />
-            <br />
-            <a href="<c:url value="/j_spring_security_logout" />">Wyloguj</a>
+        <c:when test="${pageContext.request.userPrincipal.name != null}">
+            Jesteś zalogowany jako : <b>${pageContext.request.userPrincipal.name}</b>
+            &nbsp;|&nbsp;
+            <a href="javascript:formSubmit()" >Wyloguj</a>
         </c:when>
         <c:otherwise>
-            Nie jesteś zalogowany!
-            <br />
+            Nie jesteś zalogowany
+            &nbsp;|&nbsp;
             <a href="<c:url value="/login" />">Zaloguj</a>
-        </c:otherwise>
+        </c:otherwise>            
     </c:choose>
 
-<!--     /.input-group -->
+
+
+    <!--     /.input-group -->
 </div>
 
 <!-- Blog Search Well -->

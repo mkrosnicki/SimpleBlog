@@ -24,4 +24,10 @@
         <put-attribute name="body" value="/WEB-INF/tiles/login_body.jsp" />
     </definition>
     
+    <definition name="admin" extends="login">
+        <put-attribute name="title" value="SimpleBlog by Maku :: AdminPage" />
+        <put-attribute name="menu" value="/WEB-INF/tiles/menu.jsp" />
+        <put-attribute name="body" value="/WEB-INF/tiles/admin_body.jsp" />
+    </definition>
+    
 </tiles-definitions>
