@@ -1,23 +1,24 @@
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
-<!DOCTYPE html>
-
-
+<%@taglib prefix="tiles" uri="http://tiles.apache.org/tags-tiles" %>
+<%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 
 <div class="well">
     <h4>Panel logowania</h4>
-    <form class="form-horizontal">
+    
+    <c:choose>
+        <c:when test="${true}">
+            Jesteś zalogowany jako <c:out value="${1}" />
+            <br />
+            <a href="<c:url value="/j_spring_security_logout" />">Wyloguj</a>
+        </c:when>
+        <c:otherwise>
+            Nie jesteś zalogowany!
+            <br />
+            <a href="<c:url value="/login" />">Zaloguj</a>
+        </c:otherwise>
+    </c:choose>
 
-            <input type="text" class="form-control" placeholder="Nazwa użytkownika">
-
-        <input type="password" class="form-control" id="password" placeholder="Twoje hasło">
-        <span class="input-group-btn">
-            <button class="btn btn-default" type="button">
-                Zaloguj
-            </button>
-        </span>
-    </form>
-
-    <!-- /.input-group -->
+<!--     /.input-group -->
 </div>
 
 <!-- Blog Search Well -->

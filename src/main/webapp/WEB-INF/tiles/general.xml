@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="ISO-8859-1" ?>
+<?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE tiles-definitions PUBLIC
        "-//Apache Software Foundation//DTD Tiles Configuration 3.0//EN"
        "http://tiles.apache.org/dtds/tiles-config_3_0.dtd">
@@ -6,7 +6,7 @@
 <tiles-definitions>
     
     <definition name="common" template="/WEB-INF/tiles/template.jsp">
-        <put-attribute name="title" value="SimpleBlog by Maku" />
+        <put-attribute name="title" value="SimpleBlog by Maku :: Strona główna" />
         <put-attribute name="header" value="/WEB-INF/tiles/header.jsp" />
         <put-attribute name="menu" value="/WEB-INF/tiles/menu.jsp" />
         <put-attribute name="body" value="/WEB-INF/tiles/body.jsp" />
@@ -16,6 +16,12 @@
     <definition name="index" extends="common">
         <put-attribute name="header" value="/WEB-INF/tiles/index_header.jsp" />
         <put-attribute name="body" value="/WEB-INF/tiles/index_body.jsp" />
+    </definition>
+    
+    <definition name="login" template="/WEB-INF/tiles/login_template.jsp">
+        <put-attribute name="title" value="SimpleBlog by Maku :: Zaloguj" />
+        <put-attribute name="menu" value="/WEB-INF/tiles/menu.jsp" />
+        <put-attribute name="body" value="/WEB-INF/tiles/login_body.jsp" />
     </definition>
     
 </tiles-definitions>
