@@ -18,7 +18,7 @@
     
     
 <!--    <sec:http auto-config="true">
-
+        <sec:intercept-url pattern="/admin**" access="hasRole('ROLE_ADMIN')" />
     </sec:http>-->
     
     <!--    <sec:authentication-manager>
@@ -31,7 +31,7 @@
     
     
     <sec:http auto-config="true" use-expressions="true">
-<!--        <sec:intercept-url pattern="/admin**" access="ROLE_ADMIN" />-->
+<!--        <sec:intercept-url pattern="/admin**" access="hasRole('ROLE_ADMIN')" />-->
         <sec:form-login login-processing-url="/j_spring_security_check"
                         login-page="/login"
                         default-target-url="/"

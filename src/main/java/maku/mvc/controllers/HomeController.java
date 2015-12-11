@@ -31,30 +31,5 @@ public class HomeController {
         }
         return "login";
     }
-    
-    @RequestMapping(value = "/admin", method = RequestMethod.GET)
-    public ModelAndView showAdminPage() {
-        ModelAndView model = new ModelAndView();
-        model.addObject("welcome", "Witaj adminie!");
-        model.setViewName("admin");
-        return model;
-    }
-    
-//    @RequestMapping(value = "/register", method = RequestMethod.GET)
-//    public String registerUser(Model model) {
-//        model.addAttribute("newUser", new User());
-//        return "register";
-//    }
-//    
-//    @RequestMapping(value = "/register", method = RequestMethod.POST)
-//    public String registerUserForm(@Valid User user, BindingResult result) {
-//        if (result.hasErrors()) {
-//            return "register";
-//        }
-////        if ()
-////        Role newUserRole = new Role();
-////        newUserRole.s
-//        return null;
-//    }
 
 }

@@ -1,0 +1,22 @@
+package maku.mvc.controllers;
+
+import org.springframework.security.access.annotation.Secured;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.servlet.ModelAndView;
+
+@Controller
+@RequestMapping(value = "/admin")
+@Secured(value = "ROLE_ADMIN")
+public class AdminController {
+
+    @RequestMapping(value = "", method = RequestMethod.GET)
+    public ModelAndView showAdminPage() {
+        ModelAndView model = new ModelAndView();
+        model.addObject("welcome", "Witaj adminie!");
+        model.setViewName("admin");
+        return model;
+    }
+
+}

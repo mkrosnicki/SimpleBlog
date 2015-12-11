@@ -1,9 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <beans xmlns="http://www.springframework.org/schema/beans"
+        xmlns:sec="http://www.springframework.org/schema/security"
        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
        xmlns:mvc="http://www.springframework.org/schema/mvc"
        xmlns:context="http://www.springframework.org/schema/context"
        xsi:schemaLocation="
+                http://www.springframework.org/schema/security
+                http://www.springframework.org/schema/security/spring-security-4.0.xsd
                 http://www.springframework.org/schema/mvc 
                 http://www.springframework.org/schema/mvc/spring-mvc-4.0.xsd
                 http://www.springframework.org/schema/beans 
@@ -22,6 +25,8 @@
     <!--    POZWALA DODAWAĆ CSS I JS DO JSP-->
     <mvc:resources mapping="/resources/**" location="/resources/"  
 	cache-period="31556926"/>
+    <!--    POZWALA NA ADNOTACJE SECURE-->
+    <sec:global-method-security secured-annotations="enabled" pre-post-annotations="enabled" />
     
     
     <!--    DOPASOWUJE WIDOK W ZALEŻNOSCI OD NAZWY ZWRÓCONEJ PRZEZ KONTROLER ( JEŚLI KONTROLLER POPROSI O main SZUKANY BEDZIE /WEB-INF/views/main.jsp-->

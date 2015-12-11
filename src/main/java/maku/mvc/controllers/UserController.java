@@ -12,6 +12,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 @Controller
 public class UserController {
@@ -26,7 +27,7 @@ public class UserController {
     }
     
     @RequestMapping(value = "/register", method = RequestMethod.POST)
-    public String registerUserForm(@Valid User user, BindingResult result, Model model) {
+    public String registerUserForm(@Valid User user, BindingResult result, Model model, RedirectAttributes attributes) {
         if (result.hasErrors()) {
             return "register";
         }
@@ -39,7 +40,7 @@ public class UserController {
         dao.addUser(user);
         user.getRoles().add(role);
         dao.saveUser(user);
-        //model.addAttribute("message", "Zarejestrowano nowego użytkownika! Możesz się teraz zalogować.");
+        attributes.addFlashAttribute("message", "Zarejestrowano nowego użytkownika! Możesz się teraz zalogować.");
         return "redirect:/register";    
     }
     
