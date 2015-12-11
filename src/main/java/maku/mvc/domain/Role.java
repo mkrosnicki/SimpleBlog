@@ -26,7 +26,7 @@ public class Role implements Serializable {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
-    @Column(name = "authority")
+    @Column(name = "authority", unique = true)
     private String authority;
 
     @ManyToMany

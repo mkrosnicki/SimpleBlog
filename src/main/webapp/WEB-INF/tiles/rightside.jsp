@@ -19,6 +19,8 @@
             Nie jesteś zalogowany
             &nbsp;|&nbsp;
             <a href="<c:url value="/login" />">Zaloguj</a>
+            &nbsp;lub&nbsp;
+            <a href="<c:url value="/register" />">Zarejestruj sie</a>
         </c:otherwise>            
     </c:choose>
 

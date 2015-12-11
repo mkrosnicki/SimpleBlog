@@ -27,7 +27,7 @@ public class User implements Serializable {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
-    @Column(name = "username")
+    @Column(name = "username", unique = true)
     @Size(min = 3, max = 20, message = "Od 3 do 20 znaków")
     private String name;
 
