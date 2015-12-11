@@ -19,4 +19,6 @@ public interface RoleDao {
     
     public void addRole(Role role);
     
+    public void saveRole(Role role);
+    
 }

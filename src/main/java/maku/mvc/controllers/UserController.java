@@ -11,12 +11,32 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.servlet.ModelAndView;
 
 @Controller
 public class UserController {
     
     @Autowired
     UserDaoImpl dao;
+    
+    @RequestMapping(value = "/register", method = RequestMethod.GET)
+    public String registerUser(Model model) {
+        model.addAttribute("newUser", new User());
+        return "register";
+    }
+    
+    @RequestMapping(value = "/register", method = RequestMethod.POST)
+    public ModelAndView registerUserForm(@Valid User user, BindingResult result) {
+        ModelAndView model = new ModelAndView();
+        if (result.hasErrors()) {
+            model.setViewName("register");
+            return model;
+        }
+        user.setRoles(dao.getRolesByAuthority("ROLE_USER"));
+        dao.addUser(user);
+        model.setViewName("common");
+        return model;    
+    }
     
     @RequestMapping("/users")
     public String getPersonList(Map<String, Object> model) {

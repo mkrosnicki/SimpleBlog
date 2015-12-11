@@ -15,10 +15,15 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 
 @Entity
 @Table(name = "ROLE")
+@NamedQueries({
+    @NamedQuery(name = "Role.findByAuthority", query = "SELECT r FROM Role r WHERE r.authority = :id")
+})
 public class Role implements Serializable {
 
     @Id
