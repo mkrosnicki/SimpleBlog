@@ -16,4 +16,7 @@
     <c:if test="${error ne null}">
         <div class="alert alert-danger">${error}</div>
     </c:if>
+    <c:if test="${message ne null}">
+        <div class="alert alert-danger">${message}</div>
+    </c:if>
 </div>

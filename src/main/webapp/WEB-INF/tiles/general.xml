@@ -31,7 +31,7 @@
     
     <definition name="register" extends="login">
         <put-attribute name="title" value="SimpleBlog by Maku :: Rejestracja użytkownika" />
-        <put-attribute name="body" value="/WEB-INF/tiles/admin_body.jsp" />
+        <put-attribute name="body" value="/WEB-INF/tiles/register_body.jsp" />
     </definition>
     
 </tiles-definitions>

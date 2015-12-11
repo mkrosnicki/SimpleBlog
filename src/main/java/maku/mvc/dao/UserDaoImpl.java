@@ -2,6 +2,7 @@ package maku.mvc.dao;
 
 import java.util.List;
 import javax.persistence.EntityManager;
+import javax.persistence.NoResultException;
 import javax.persistence.PersistenceContext;
 import maku.mvc.domain.Role;
 import maku.mvc.domain.User;
@@ -22,7 +23,13 @@ public class UserDaoImpl implements UserDao {
 
     @Override
     public User getUserByName(String name) {
-        return em.find(User.class, name);
+        User user;
+        try {
+            user = (User) em.createNamedQuery("User.findByName").setParameter("name", name).getSingleResult();
+        } catch ( NoResultException e ) {
+            return null;
+        }
+        return user;
     }
 
     @Override
@@ -46,11 +53,12 @@ public class UserDaoImpl implements UserDao {
 
     @Override
     public Role getRoleByAuthority(String authority) {
-        return (Role) em.createNamedQuery("Role.findByAuthority");
+        return (Role) em.createNamedQuery("Role.findByAuthority").setParameter("authority", authority).getSingleResult();
     }
     
+    @Override
     public List<Role> getRolesByAuthority(String authority) {
-        return (List<Role>) em.createNamedQuery("Role.findByAuthority").getResultList();
+        return (List<Role>) em.createNamedQuery("Role.findByAuthority").setParameter("authority", authority).getResultList();
     }
 
     @Override

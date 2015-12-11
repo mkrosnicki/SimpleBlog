@@ -1,12 +1,17 @@
 package maku.mvc.domain;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
@@ -37,8 +42,17 @@ public class User implements Serializable {
     @Type(type = "boolean")
     private boolean enabled;
 
-    @ManyToMany(mappedBy = "users")
-    private List<Role> roles;
+    @ManyToMany(fetch = FetchType.EAGER)
+    @JoinTable(
+            name = "user_roles",
+            joinColumns = {
+                @JoinColumn(name = "username", referencedColumnName = "username")
+            },
+            inverseJoinColumns = {
+                @JoinColumn(name = "authority", referencedColumnName = "authority")
+            }
+    )
+    private List<Role> roles = new ArrayList<>();
 
     public Long getId() {
         return id;
@@ -82,7 +96,7 @@ public class User implements Serializable {
 
     @Override
     public String toString() {
-        return "User{" + "name=" + name + ", password=" + password + ", enabled=" + enabled + '}';
+        return "User{" + "id=" + id + ", name=" + name + ", password=" + password + ", enabled=" + enabled + ", roles=" + roles + '}';
     }
 
 }
