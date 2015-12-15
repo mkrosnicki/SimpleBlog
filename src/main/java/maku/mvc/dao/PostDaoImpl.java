@@ -19,7 +19,6 @@ public class PostDaoImpl implements PostDao {
 
     @Override
     public List<Post> getAllPosts() {
-        System.out.println("EntityManager" + em == null);
         return (List<Post>) em.createNamedQuery("Post.findAll").getResultList();
     }
 
@@ -35,7 +34,7 @@ public class PostDaoImpl implements PostDao {
 
     @Override
     public Post getPostById(Long id) {
-        return (Post) em.createNamedQuery("Post.findById");
+        return (Post) em.find(Post.class, id);
     }
 
     @Override
