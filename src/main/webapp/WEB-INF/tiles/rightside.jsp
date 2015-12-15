@@ -14,6 +14,11 @@
             Jesteś zalogowany jako : <b>${pageContext.request.userPrincipal.name}</b>
             &nbsp;|&nbsp;
             <a href="javascript:formSubmit()" >Wyloguj</a>
+            <br />
+            <c:if test="${isAdminLogged}">
+                <br />
+                <a href="${pageContext.request.contextPath}/admin">Panel admina</a>
+            </c:if>
         </c:when>
         <c:otherwise>
             Nie jesteś zalogowany

@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package maku.mvc.domain;
 
 import java.io.Serializable;
@@ -11,6 +6,7 @@ import java.util.List;
 import java.util.Objects;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -37,7 +33,7 @@ public class Post implements Serializable {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
-    @Column(name = "title")
+    @Column(name = "title", unique = true)
     @Size(min = 5, max = 30)
     private String title;
 
@@ -45,18 +41,15 @@ public class Post implements Serializable {
     @Lob
     private String text;
 
-    @Column(name = "poster")
-    private User poster;
-
     @Column(name = "date")
     private Date dateOfPublish;
 
-    @OneToMany(mappedBy = "post")
+    @OneToMany(mappedBy = "post", fetch = FetchType.EAGER)
     private List<Comment> comments;
 
     @ManyToOne
     @JoinColumn(name = "user_id", referencedColumnName = "user_id")
-    private User publisher;
+    private User poster;
 
     public Long getId() {
         return id;
@@ -106,14 +99,6 @@ public class Post implements Serializable {
         this.comments = comments;
     }
 
-    public User getPublisher() {
-        return publisher;
-    }
-
-    public void setPublisher(User publisher) {
-        this.publisher = publisher;
-    }
-
     @Override
     public int hashCode() {
         int hash = 7;
@@ -147,15 +132,12 @@ public class Post implements Serializable {
         if (!Objects.equals(this.comments, other.comments)) {
             return false;
         }
-        if (!Objects.equals(this.publisher, other.publisher)) {
-            return false;
-        }
         return true;
     }
 
     @Override
     public String toString() {
-        return "Post{" + "id=" + id + ", title=" + title + ", text=" + text + ", poster=" + poster + ", dateOfPublish=" + dateOfPublish + ", comments=" + comments + ", publisher=" + publisher + '}';
+        return "Post{" + "id=" + id + ", title=" + title + ", text=" + text + ", poster=" + poster + ", dateOfPublish=" + dateOfPublish + ", comments=" + comments + '}';
     }
 
 }

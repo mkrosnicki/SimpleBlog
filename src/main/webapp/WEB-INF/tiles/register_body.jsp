@@ -6,9 +6,18 @@
 <div class="well">
     <h4>Panel rejestracji nowego użytkownika</h4>
     <form:form modelAttribute="user" cssClass="form-horizontal">
-        <form:input type="text" path="name" placeholder="Nazwa użytkownika" /><form:errors path="name" />
-        <form:input type="text" path="password" placeholder="Hasło" /><form:errors path="password" />
-        <form:button>Zarejestruj</form:button>
+        <form:input type="text" path="name" placeholder="Nazwa użytkownika" cssClass="form-control"/>
+        <form:input type="password" path="password" placeholder="Hasło" cssClass="form-control"/>
+        <span class="input-group-btn">
+            <input type="submit" class="btn btn-default" value="Zarejestruj" >
+        </span>
+        <br />
+        <c:if test="${pageContext.request.method == 'POST'}">
+            <div class="alert alert-danger">
+                <form:errors path="name" />
+                <form:errors path="password" />
+                <c:if test="${message != null}">${message}</c:if>
+                </div>
+        </c:if>
     </form:form>
-    <c:if test="${message != null}">${message}</c:if>
 </div>

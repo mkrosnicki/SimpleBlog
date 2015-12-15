@@ -34,9 +34,19 @@
         <put-attribute name="body" value="/WEB-INF/tiles/admin_users_body.jsp" />
     </definition>
     
+    <definition name="posts" extends="login">
+        <put-attribute name="title" value="SimpleBlog by Maku :: Admin Page :: Lista postów" />
+        <put-attribute name="body" value="/WEB-INF/tiles/admin_posts_body.jsp" />
+    </definition>
+    
     <definition name="register" extends="login">
         <put-attribute name="title" value="SimpleBlog by Maku :: Rejestracja użytkownika" />
         <put-attribute name="body" value="/WEB-INF/tiles/register_body.jsp" />
+    </definition>
+    
+    <definition name="addpost" extends="login">
+        <put-attribute name="title" value="SimpleBlog by Maku :: Nowy post" />
+        <put-attribute name="body" value="/WEB-INF/tiles/addpost_body.jsp" />
     </definition>
     
 </tiles-definitions>

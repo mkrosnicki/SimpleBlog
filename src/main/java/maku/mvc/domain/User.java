@@ -33,10 +33,10 @@ public class User implements Serializable {
     private Long id;
 
     @Column(name = "username", unique = true)
-    @Size(min = 3, max = 20, message = "Od 3 do 20 znaków")
+    @Size(min = 3, max = 20, message = "Nazwa użytkownika musi zawierać od 3 do 20 znaków")
     private String name;
 
-    @Size(min = 3, max = 20, message = "Od 3 do 20 znaków")
+    @Size(min = 3, max = 20, message = "Hasło musi składać się z 3 do 20 znaków")
     private String password;
 
     @Type(type = "boolean")
@@ -54,7 +54,7 @@ public class User implements Serializable {
     )
     private List<Role> roles = new ArrayList<>();
     
-    @OneToMany(mappedBy = "publisher")
+    @OneToMany(mappedBy = "poster")
     private List<Post> posts;
 
     public Long getId() {
