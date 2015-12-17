@@ -54,22 +54,18 @@ public class AdminController {
     }
     
     @RequestMapping(value = "/addpost", method = RequestMethod.GET)
-    public ModelAndView addPost() {
-        ModelAndView model = new ModelAndView();
-        model.addObject("post", new Post());
-        model.setViewName("addpost");
-        return model;
+    public String addPost(Model model) {
+        model.addAttribute("post", new Post());
+        return "addpost";
     }
     
     @RequestMapping(value = "/addpost", method = RequestMethod.POST)
-    public ModelAndView addPostForm(@Valid Post post, HttpServletRequest request) {
+    public String addPostForm(@Valid Post post, HttpServletRequest request, Model model) {
         User loggedUser = dao.getUserByName(request.getUserPrincipal().getName());
         post.setPoster(loggedUser);
         post.setDateOfPublish(new Date());
         postDao.persistPost(post);
-        ModelAndView model = new ModelAndView();
-        model.setViewName("redirect:/");
-        return model;
+        return "redirect:/";
     }
     
     @RequestMapping(value = "/delete/{id}")
@@ -83,7 +79,7 @@ public class AdminController {
     public ModelAndView editPost(@PathVariable("id") Long id) {
         ModelAndView model = new ModelAndView();
         System.out.println(postDao.getPostById(id) == null);
-        model.addObject("posttoedit", postDao.getPostById(id));
+        model.addObject("post", postDao.getPostById(id));
         model.setViewName("editpost");
         return model;
     }

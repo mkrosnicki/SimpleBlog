@@ -1,6 +1,7 @@
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@taglib prefix="tiles" uri="http://tiles.apache.org/tags-tiles" %>
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 
 <div class="well">
     <h4>Panel admina</h4>
@@ -10,7 +11,7 @@
 <div class="well">
     <ul class="nav nav-pills nav-stacked ">
         <h4>Edytuj posta</h4>
-        <form:form modelAttribute="posttoedit" cssClass="form-horizontal">
+        <form:form modelAttribute="post" cssClass="form-horizontal">
             <form:input type="text" path="title" cssClass="form-control" placeholder="Tytuł posta"/>
             <form:textarea  path="text" cssClass="form-control" cssStyle="resize: none; height: 300px" placeholder="Treść posta"/>
             <span class="btn-group">
@@ -24,9 +25,9 @@
             </c:if>
         </form:form>
         <c:if test="${message != null}">
-            <div class="alert alert-success">
+            <span class="alert alert-success">
                 ${message}
-            </div>
+            </span>
         </c:if>
     </ul>
 </div>

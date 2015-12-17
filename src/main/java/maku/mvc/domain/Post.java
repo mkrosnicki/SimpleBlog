@@ -38,7 +38,6 @@ public class Post implements Serializable {
     private String title;
 
     @Column(name = "text")
-    @Lob
     private String text;
 
     @Column(name = "date")
