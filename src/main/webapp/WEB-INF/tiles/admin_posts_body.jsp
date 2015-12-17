@@ -28,7 +28,7 @@
                     <td>${post.comments.size()}</td>
                     <td>${post.poster.name}</td>
                     <td><a href="delete/${post.id}">Usuń</a></td>
-                    <td><a href="edit?id=${post.id}">Edytuj</a></td>
+                    <td><a href="edit/${post.id}">Edytuj</a></td>
                 </tr>
             </c:forEach>
         </tbody>

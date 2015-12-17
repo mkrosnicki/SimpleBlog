@@ -49,4 +49,9 @@
         <put-attribute name="body" value="/WEB-INF/tiles/addpost_body.jsp" />
     </definition>
     
+    <definition name="editpost" extends="login">
+        <put-attribute name="title" value="SimpleBlog by Maku :: Edycja posta" />
+        <put-attribute name="body" value="/WEB-INF/tiles/editpost_body.jsp" />
+    </definition>
+    
 </tiles-definitions>

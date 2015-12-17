@@ -10,10 +10,13 @@ import maku.mvc.domain.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 @Controller
 @RequestMapping(value = "/admin")
@@ -70,9 +73,36 @@ public class AdminController {
     }
     
     @RequestMapping(value = "/delete/{id}")
-    public String deletePost(@PathVariable("id") Long id) {
+    public String deletePost(@PathVariable("id") Long id, RedirectAttributes attributes) {
         postDao.removePost(id);
+        attributes.addFlashAttribute("message", "Pomyślnie usunięto post!");
         return "redirect:/admin/posts";
+    }
+    
+    @RequestMapping(value = "/edit/{id}", method = RequestMethod.GET)
+    public ModelAndView editPost(@PathVariable("id") Long id) {
+        ModelAndView model = new ModelAndView();
+        System.out.println(postDao.getPostById(id) == null);
+        model.addObject("posttoedit", postDao.getPostById(id));
+        model.setViewName("editpost");
+        return model;
+    }
+    
+    @RequestMapping(value = "/edit/{id}", method = RequestMethod.POST)
+    public ModelAndView editPostForm(@Valid Post post,
+            BindingResult result,
+            @PathVariable("id") Long id,
+            RedirectAttributes attributes) {
+        ModelAndView model = new ModelAndView();
+        if (result.hasErrors()) {
+            model.setViewName("/admin/edit/" + id);
+            return model;
+        }
+        post.setId(id);
+        postDao.mergePost(post);
+        attributes.addFlashAttribute("message", "Pomyślnie zedytowano post!");
+        model.setViewName("redirect:/admin/posts");
+        return model;
     }
 
 }
