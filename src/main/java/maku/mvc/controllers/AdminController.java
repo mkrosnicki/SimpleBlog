@@ -69,10 +69,10 @@ public class AdminController {
         return model;
     }
     
-    @RequestMapping(value = "/delete/{id}", method = RequestMethod.GET)
-    public String deletePost(@PathVariable Long id) {
+    @RequestMapping(value = "/delete/{id}")
+    public String deletePost(@PathVariable("id") Long id) {
         postDao.removePost(id);
-        return "redirect:/posts";
+        return "redirect:/admin/posts";
     }
 
 }
