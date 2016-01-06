@@ -17,7 +17,9 @@ import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 import javax.validation.constraints.Size;
+import org.springframework.web.multipart.MultipartFile;
 
 @Entity
 @Table(name = "posts")
@@ -26,7 +28,7 @@ import javax.validation.constraints.Size;
     @NamedQuery(name = "Post.findByTitle", query = "SELECT p FROM Post p WHERE p.title = :title"),
     @NamedQuery(name = "Post.findById", query = "SELECT p FROM Post p WHERE p.id = :id")
 })
-public class Post implements Serializable {
+public class Post implements Serializable, Comparable<Post> {
 
     @Id
     @Column(name = "post_id")
@@ -34,7 +36,7 @@ public class Post implements Serializable {
     private Long id;
 
     @Column(name = "title", unique = true)
-    @Size(min = 5, max = 30)
+    @Size(min = 3, max = 30)
     private String title;
 
     @Column(name = "text")
@@ -49,6 +51,11 @@ public class Post implements Serializable {
     @ManyToOne
     @JoinColumn(name = "user_id", referencedColumnName = "user_id")
     private User poster;
+
+    @Transient
+    private MultipartFile image;
+
+    private String imagePath;
 
     public Long getId() {
         return id;
@@ -98,6 +105,22 @@ public class Post implements Serializable {
         this.comments = comments;
     }
 
+    public MultipartFile getImage() {
+        return image;
+    }
+
+    public void setImage(MultipartFile image) {
+        this.image = image;
+    }
+
+    public String getImagePath() {
+        return imagePath;
+    }
+
+    public void setImagePath(String imagePath) {
+        this.imagePath = imagePath;
+    }
+
     @Override
     public int hashCode() {
         int hash = 7;
@@ -137,6 +160,11 @@ public class Post implements Serializable {
     @Override
     public String toString() {
         return "Post{" + "id=" + id + ", title=" + title + ", text=" + text + ", poster=" + poster + ", dateOfPublish=" + dateOfPublish + ", comments=" + comments + '}';
+    }
+
+    @Override
+    public int compareTo(Post o) {
+        return this.getDateOfPublish().compareTo(o.dateOfPublish);
     }
 
 }

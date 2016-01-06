@@ -4,11 +4,6 @@
 <%@taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 
 <div class="well">
-    <h4>Panel admina</h4>
-    Jesteś zalogowany jako : <b>${pageContext.request.userPrincipal.name}</b>
-    <br />
-</div>
-<div class="well">
     <ul class="nav nav-pills nav-stacked ">
         <h4>Edytuj posta</h4>
         <form:form modelAttribute="post" cssClass="form-horizontal">

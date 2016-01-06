@@ -1,6 +1,9 @@
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
-
-<h1 class="page-header">
-    SimpleBlog
-    <small>by Maku</small>
-</h1>
+<div class="well">
+    <h1>
+        <center>
+            SimpleBlog
+            <small>by Maku</small>
+        </center>
+    </h1>
+</div>

@@ -1,12 +1,20 @@
 package maku.mvc.controllers;
 
+import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.Date;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
+import maku.mvc.config.ImageUploadException;
+import maku.mvc.config.ImageHandler;
 import maku.mvc.dao.UserDao;
 import maku.mvc.domain.Post;
 import maku.mvc.domain.PostDao;
 import maku.mvc.domain.User;
+import org.apache.commons.io.FileUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.stereotype.Controller;
@@ -15,6 +23,8 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
@@ -22,10 +32,10 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 @RequestMapping(value = "/admin")
 @Secured(value = "ROLE_ADMIN")
 public class AdminController {
-    
+
     @Autowired
     UserDao dao;
-    
+
     @Autowired
     PostDao postDao;
 
@@ -36,15 +46,16 @@ public class AdminController {
         model.setViewName("admin");
         return model;
     }
-    
+
     @RequestMapping(value = "/users", method = RequestMethod.GET)
     public ModelAndView showUsers() {
+        System.out.println(dao.getAll().get(0).getRoles());
         ModelAndView model = new ModelAndView();
         model.addObject("users", dao.getAll());
         model.setViewName("users");
         return model;
     }
-    
+
     @RequestMapping(value = "/posts", method = RequestMethod.GET)
     public ModelAndView showPosts() {
         ModelAndView model = new ModelAndView();
@@ -52,29 +63,53 @@ public class AdminController {
         model.setViewName("posts");
         return model;
     }
-    
+
     @RequestMapping(value = "/addpost", method = RequestMethod.GET)
     public String addPost(Model model) {
         model.addAttribute("post", new Post());
         return "addpost";
     }
-    
+
     @RequestMapping(value = "/addpost", method = RequestMethod.POST)
-    public String addPostForm(@Valid Post post, HttpServletRequest request, Model model) {
+    public String addPostForm(@Valid Post post,
+            HttpServletRequest request,
+            Model model,
+            @RequestParam(value = "image", required = false) MultipartFile image,
+            HttpSession session) {
         User loggedUser = dao.getUserByName(request.getUserPrincipal().getName());
         post.setPoster(loggedUser);
         post.setDateOfPublish(new Date());
+        String webPath = session.getServletContext().getRealPath("/resources/");
         postDao.persistPost(post);
+        try {
+            ImageHandler.validate(image);
+        } catch (ImageUploadException e) {
+            model.addAttribute("message", e.getMessage());
+            return "addpost";
+        }
+        try {
+            Files.deleteIfExists(Paths.get(webPath + "/upload/post" + post.getId()));
+        } catch (IOException ex) {
+            ex.printStackTrace();
+        }
+        try {
+            ImageHandler.save("post" + post.getId() + ".jpg", webPath, image);
+        } catch (ImageUploadException e) {
+            model.addAttribute("message", e.getMessage());
+            return "addpost";
+        }
+        post.setImagePath("post" + post.getId() + ".jpg");
+        postDao.mergePost(post);
         return "redirect:/";
     }
-    
+
     @RequestMapping(value = "/delete/{id}")
     public String deletePost(@PathVariable("id") Long id, RedirectAttributes attributes) {
         postDao.removePost(id);
         attributes.addFlashAttribute("message", "Pomyślnie usunięto post!");
         return "redirect:/admin/posts";
     }
-    
+
     @RequestMapping(value = "/edit/{id}", method = RequestMethod.GET)
     public ModelAndView editPost(@PathVariable("id") Long id) {
         ModelAndView model = new ModelAndView();
@@ -83,7 +118,7 @@ public class AdminController {
         model.setViewName("editpost");
         return model;
     }
-    
+
     @RequestMapping(value = "/edit/{id}", method = RequestMethod.POST)
     public ModelAndView editPostForm(@Valid Post post,
             BindingResult result,
@@ -99,6 +134,16 @@ public class AdminController {
         attributes.addFlashAttribute("message", "Pomyślnie zedytowano post!");
         model.setViewName("redirect:/admin/posts");
         return model;
+    }
+
+    private void saveImage(String path, String fileName, MultipartFile image) throws ImageUploadException {
+        try {
+            File file = new File(path + "/upload/" + fileName);
+            FileUtils.writeByteArrayToFile(file, image.getBytes());
+        } catch (IOException e) {
+            e.printStackTrace();
+            throw new ImageUploadException("Nie udało się zapisać obrazu");
+        }
     }
 
 }

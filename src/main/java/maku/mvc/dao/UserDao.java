@@ -10,23 +10,25 @@ import org.springframework.transaction.annotation.Transactional;
 @Transactional
 public interface UserDao {
 
-    public List<User> getAll();
+    List<User> getAll();
 
-    public User getUserByName(String name);
+    User getUserByName(String name);
 
-    public void addUser(User user);
-
-    public void saveUser(User user);
-
-    public void deleteUser(User user);
-
-    public Role getRoleById(Long id);
-
-    public Role getRoleByAuthority(String authority);
+    User getUserById(Long id);
     
-    public List<Role> getRolesByAuthority(String authority);
+    void addUser(User user);
 
-    public void addRole(Role role);
+    void saveUser(User user);
 
-    public void saveRole(Role role);
+    void deleteUser(User user);
+
+    Role getRoleById(Long id);
+
+    Role getRoleByAuthority(String authority);
+    
+    List<Role> getRolesByAuthority(String authority);
+
+    void addRole(Role role);
+
+    void saveRole(Role role);
 }

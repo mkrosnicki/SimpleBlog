@@ -4,16 +4,15 @@
 <%@taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 
 <div class="well">
-    <h4>Panel admina</h4>
-    Jesteś zalogowany jako : <b>${pageContext.request.userPrincipal.name}</b>
-    <br />
-</div>
-<div class="well">
     <ul class="nav nav-pills nav-stacked ">
         <h4>Dodaj nowego posta</h4>
-        <form:form modelAttribute="post" cssClass="form-horizontal">
-            <form:input type="text" path="title" cssClass="form-control" placeholder="Tytuł posta"/><form:errors path="title" />
+        <form:form modelAttribute="post" cssClass="form-horizontal" enctype="multipart/form-data">
+            <form:input type="text" path="title" cssClass="form-control" placeholder="Tytuł posta"/>
             <form:textarea  path="text" cssClass="form-control" cssStyle="resize: none; height: 300px" placeholder="Treść posta"/>
+            <div class="form-inline">
+                <form:input name="image" cssClass="" type="file" path="image"/>      
+            </div>
+
             <span class="btn-group">
                 <input type="submit" class="btn btn-default" value="Dodaj"/>
             </span>

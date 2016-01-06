@@ -76,4 +76,9 @@ public class UserDaoImpl implements UserDao {
         em.remove(user);
     }
 
+    @Override
+    public User getUserById(Long id) {
+        return (User) em.createNamedQuery("User.findById").setParameter("id", id).getSingleResult();
+    }
+
 }

@@ -23,7 +23,8 @@ import org.hibernate.annotations.Type;
 @Table(name = "users")
 @NamedQueries({
     @NamedQuery(name = "User.findAll", query = "SELECT u FROM User u"),
-    @NamedQuery(name = "User.findByName", query = "SELECT u FROM User u WHERE u.name = :name")
+    @NamedQuery(name = "User.findByName", query = "SELECT u FROM User u WHERE u.name = :name"),
+    @NamedQuery(name = "User.findById", query = "SELECT u FROM User u WHERE u.id = :id")
 })
 public class User implements Serializable {
 
@@ -53,7 +54,7 @@ public class User implements Serializable {
             }
     )
     private List<Role> roles = new ArrayList<>();
-    
+
     @OneToMany(mappedBy = "poster")
     private List<Post> posts;
 
@@ -95,6 +96,14 @@ public class User implements Serializable {
 
     public void setRoles(List<Role> roles) {
         this.roles = roles;
+    }
+
+    public List<Post> getPosts() {
+        return posts;
+    }
+
+    public void setPosts(List<Post> posts) {
+        this.posts = posts;
     }
 
     @Override

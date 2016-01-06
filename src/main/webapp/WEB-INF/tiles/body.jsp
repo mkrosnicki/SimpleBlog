@@ -3,18 +3,18 @@
 
 
 <c:forEach var="post" items="${posts}">
-    <h2>${post.title}</h2>
+    <h1>${post.title}</h1>
     <p class="lead">
-        by <a href="index.php">${post.poster.name}</a>
-    </p>
-    <p><span class="glyphicon glyphicon-time"></span> Posted on August ${post.dateOfPublish}</p>
-    <hr>
-    <img class="img-responsive" src="http://placehold.it/900x300" alt="">
-    <hr>
-    <p>${post.text}</p>
-    <a class="btn btn-primary" href="#">Read More <span class="glyphicon glyphicon-chevron-right"></span></a>
+    <h5>Dodany przez <a href="<c:url value="/user/${post.poster.id}"/>">${post.poster.name}</a></h5>
+</p>
+<p><span class="glyphicon glyphicon-time"></span> ${post.dateOfPublish}</p>
+<hr>
+<img class="img-responsive" src="<c:url value="/resources/upload/${post.imagePath}"/>">
+<hr>
+<p>${post.text}</p>
+<a class="btn btn-primary" href="#">Zobacz cały post <span class="glyphicon glyphicon-chevron-right"></span></a>
 
-    <hr>
+<hr>
 </c:forEach>
 
 <!-- Pager -->

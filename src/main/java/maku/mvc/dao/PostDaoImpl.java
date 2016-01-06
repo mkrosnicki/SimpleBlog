@@ -3,6 +3,7 @@ package maku.mvc.dao;
 import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import javax.persistence.Query;
 import maku.mvc.domain.Comment;
 import maku.mvc.domain.Post;
 import maku.mvc.domain.PostDao;
@@ -44,7 +45,15 @@ public class PostDaoImpl implements PostDao {
 
     @Override
     public List<Post> getByUser(User user) {
-        return (List<Post>) em.createNamedQuery("SELECT p FROM Post p WHERE p.user.id = :user.id").getResultList();
+        Query query = null;
+        try {
+        query = em.createQuery("SELECT p FROM Post p WHERE p.poster.id = :posterId");
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+        query.setParameter("posterId", user.getId());
+        return query.getResultList();
     }
 
     @Override

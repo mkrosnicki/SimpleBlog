@@ -4,30 +4,41 @@
 
 <div class="well">
     <h4>Panel logowania</h4>
-    <form action="${pageContext.request.contextPath}/logout" method="post" id="logoutForm">
-        <input type="hidden"
-               name="${_csrf.parameterName}"
-               value="${_csrf.token}" />
-    </form>
+    <br />
+    <c:if test="${isUserLogged}">
+
+    </c:if>
     <c:choose>
-        <c:when test="${pageContext.request.userPrincipal.name != null}">
-            Jesteś zalogowany jako : <b>${pageContext.request.userPrincipal.name}</b>
+        <c:when test="${isUserLogged}">
+
+            <form action="${appContextPath}/logout" method="post" id="logoutForm">
+                <input type="hidden"
+                       name="${_csrf.parameterName}"
+                       value="${_csrf.token}" />
+            </form>
+
+            Jesteś zalogowany jako : <b><a href="${appContextPath}/user/${loggedUserId}">${loggedUserName}</a></b>
             &nbsp;|&nbsp;
             <a href="javascript:formSubmit()" >Wyloguj</a>
-            <br />
-            <c:if test="${isAdminLogged}">
-                <br />
-                <a href="${pageContext.request.contextPath}/admin">Panel admina</a>
-            </c:if>
+
         </c:when>
         <c:otherwise>
-            Nie jesteś zalogowany
-            &nbsp;|&nbsp;
-            <a href="<c:url value="/login" />">Zaloguj</a>
-            &nbsp;lub&nbsp;
-            <a href="<c:url value="/register" />">Zarejestruj sie</a>
-        </c:otherwise>            
-    </c:choose>
+            <c:url value="/j_spring_security_check" var="loginUrl" />
+            <form class="form-horizontal" action="${loginUrl}" method="POST">
+                <input type="text" name="username" class="form-control" placeholder="Nazwa użytkownika">
+                <input type="password" name="password" class="form-control" id="password" placeholder="Twoje hasło">
+                <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
+                <span class="input-group-btn">
+                    <input type="submit" class="btn btn-default" value="Zaloguj" >
+                </span>
+            </form>
+            <br />
+            <c:if test="${error ne null}">
+                <div class="alert alert-danger">${error}</div>
+            </c:if>
+            <center>Nie masz konta? <a href="<c:url value="/register" />">Zarejestruj się!</a></center>
+            </c:otherwise>            
+        </c:choose>
 
 
 
