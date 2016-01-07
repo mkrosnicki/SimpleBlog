@@ -4,7 +4,15 @@
 <div class="row">
     <div class="col-md-3">
         <div class="well">
-            gdfgdf
+            <center>
+                <img class="img-responsive img-circle" src="${appContextPath}/resources/upload/${user.imageName}" style="width: 100px; height: 100px"/>
+                <c:if test="${loggedUserName == user.name}">
+                    <br />
+                    <a href="${appContextPath}/user/${user.id}/deleteAvatar"/>Usuń awatar</a>
+                    <br />
+                    <a href="${appContextPath}/user/${user.id}/updateAvatar"/>Zmień awatar</a>
+                </c:if>
+            </center>
         </div>
     </div>
     <div class="col-md-9">

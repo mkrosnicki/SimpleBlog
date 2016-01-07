@@ -55,7 +55,7 @@ public class Post implements Serializable, Comparable<Post> {
     @Transient
     private MultipartFile image;
 
-    private String imagePath;
+    private String imageName;
 
     public Long getId() {
         return id;
@@ -113,12 +113,12 @@ public class Post implements Serializable, Comparable<Post> {
         this.image = image;
     }
 
-    public String getImagePath() {
-        return imagePath;
+    public String getImageName() {
+        return imageName;
     }
 
-    public void setImagePath(String imagePath) {
-        this.imagePath = imagePath;
+    public void setImageName(String imageName) {
+        this.imageName = imageName;
     }
 
     @Override

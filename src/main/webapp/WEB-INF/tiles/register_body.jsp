@@ -5,19 +5,23 @@
 
 <div class="well">
     <h4>Panel rejestracji nowego użytkownika</h4>
-    <form:form modelAttribute="user" cssClass="form-horizontal">
+    <form:form modelAttribute="user" cssClass="form-horizontal" enctype="multipart/form-data">
         <form:input type="text" path="name" placeholder="Nazwa użytkownika" cssClass="form-control"/>
         <form:input type="password" path="password" placeholder="Hasło" cssClass="form-control"/>
+        <form:input type="password" path="repeatPassword" placeholder="Powtórz hasło" cssClass="form-control"/>
+        <form:input name="image" cssClass="" type="file" path="image"/>
         <span class="input-group-btn">
             <input type="submit" class="btn btn-default" value="Zarejestruj" >
         </span>
         <br />
-        <c:if test="${pageContext.request.method == 'POST'}">
+        <c:if test="${registerError ne null}">
             <div class="alert alert-danger">
+                ${registerError}
+                <br />
                 <form:errors path="name" />
+                <br />
                 <form:errors path="password" />
-                <c:if test="${message != null}">${message}</c:if>
-                </div>
+            </div>
         </c:if>
     </form:form>
 </div>

@@ -78,7 +78,12 @@ public class UserDaoImpl implements UserDao {
 
     @Override
     public User getUserById(Long id) {
-        return (User) em.createNamedQuery("User.findById").setParameter("id", id).getSingleResult();
+        try {
+            return (User) em.createNamedQuery("User.findById").setParameter("id", id).getSingleResult();
+        } catch (NoResultException e) {
+            return null;
+        }
+        
     }
 
 }

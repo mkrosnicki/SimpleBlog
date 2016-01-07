@@ -27,7 +27,11 @@ public class UserInfoController {
             loggedUserName = request.getUserPrincipal().getName();
             model.addAttribute("loggedUserName", loggedUserName);
             model.addAttribute("isUserLogged", isUserLogged);
+            try {
             model.addAttribute("loggedUserId", userDao.getUserByName(loggedUserName).getId());
+            } catch (NullPointerException e) {
+                model.addAttribute("loggedUserId", 0);
+            }
         }   
         model.addAttribute("isAdminLogged", request.isUserInRole("ROLE_ADMIN"));
         model.addAttribute("appContextPath", appContextPath);

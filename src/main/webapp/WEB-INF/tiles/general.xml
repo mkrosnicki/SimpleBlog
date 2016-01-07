@@ -38,17 +38,17 @@
         <put-attribute name="body" value="/WEB-INF/tiles/admin_posts_body.jsp" />
     </definition>
     
-    <definition name="register" extends="login">
+    <definition name="register" extends="common">
         <put-attribute name="title" value="SimpleBlog by Maku :: Rejestracja użytkownika" />
         <put-attribute name="body" value="/WEB-INF/tiles/register_body.jsp" />
     </definition>
     
-    <definition name="addpost" extends="login">
+    <definition name="addpost" extends="common">
         <put-attribute name="title" value="SimpleBlog by Maku :: Nowy post" />
         <put-attribute name="body" value="/WEB-INF/tiles/addpost_body.jsp" />
     </definition>
     
-    <definition name="editpost" extends="login">
+    <definition name="editpost" extends="common">
         <put-attribute name="title" value="SimpleBlog by Maku :: Edycja posta" />
         <put-attribute name="body" value="/WEB-INF/tiles/editpost_body.jsp" />
     </definition>
@@ -56,6 +56,11 @@
     <definition name="user" extends="common">
         <put-attribute name="header" value="/WEB-INF/tiles/user_header.jsp" />
         <put-attribute name="body" value="/WEB-INF/tiles/user_body.jsp" />
+    </definition>
+    
+    <definition name="changeAvatar" extends="common">
+        <put-attribute name="title" value="SimpleBlog by Maku :: Zmień awatar" />
+        <put-attribute name="body" value="/WEB-INF/tiles/changeAvatar_body.jsp" />
     </definition>
     
 </tiles-definitions>

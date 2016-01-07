@@ -79,7 +79,8 @@ public class AdminController {
         User loggedUser = dao.getUserByName(request.getUserPrincipal().getName());
         post.setPoster(loggedUser);
         post.setDateOfPublish(new Date());
-        String webPath = session.getServletContext().getRealPath("/resources/");
+        post.setImageName("post" + post.getId() + ".jpg");
+        String webResourcePath = session.getServletContext().getRealPath("/resources/");
         postDao.persistPost(post);
         try {
             ImageHandler.validate(image);
@@ -87,18 +88,16 @@ public class AdminController {
             model.addAttribute("message", e.getMessage());
             return "addpost";
         }
+
+        boolean ifDeleted = ImageHandler.delete(post.getImageName(), webResourcePath + "/upload/");
+        
         try {
-            Files.deleteIfExists(Paths.get(webPath + "/upload/post" + post.getId()));
-        } catch (IOException ex) {
-            ex.printStackTrace();
-        }
-        try {
-            ImageHandler.save("post" + post.getId() + ".jpg", webPath, image);
+            ImageHandler.save(post.getImageName(), webResourcePath + "/upload/", image);
         } catch (ImageUploadException e) {
             model.addAttribute("message", e.getMessage());
             return "addpost";
         }
-        post.setImagePath("post" + post.getId() + ".jpg");
+        
         postDao.mergePost(post);
         return "redirect:/";
     }
@@ -136,14 +135,6 @@ public class AdminController {
         return model;
     }
 
-    private void saveImage(String path, String fileName, MultipartFile image) throws ImageUploadException {
-        try {
-            File file = new File(path + "/upload/" + fileName);
-            FileUtils.writeByteArrayToFile(file, image.getBytes());
-        } catch (IOException e) {
-            e.printStackTrace();
-            throw new ImageUploadException("Nie udało się zapisać obrazu");
-        }
-    }
+
 
 }

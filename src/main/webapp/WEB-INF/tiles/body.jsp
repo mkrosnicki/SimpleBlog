@@ -9,7 +9,7 @@
 </p>
 <p><span class="glyphicon glyphicon-time"></span> ${post.dateOfPublish}</p>
 <hr>
-<img class="img-responsive" src="<c:url value="/resources/upload/${post.imagePath}"/>">
+<img class="img-responsive img-circle" src="<c:url value="/resources/upload/${post.imagePath}"/>" style="width: 100px; height: 100px">
 <hr>
 <p>${post.text}</p>
 <a class="btn btn-primary" href="#">Zobacz cały post <span class="glyphicon glyphicon-chevron-right"></span></a>

@@ -36,6 +36,9 @@
             <c:if test="${error ne null}">
                 <div class="alert alert-danger">${error}</div>
             </c:if>
+            <c:if test="${message ne null}">
+                <div class="alert alert-success">${message}</div>
+            </c:if>
             <center>Nie masz konta? <a href="<c:url value="/register" />">Zarejestruj się!</a></center>
             </c:otherwise>            
         </c:choose>

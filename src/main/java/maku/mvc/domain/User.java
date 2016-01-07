@@ -16,8 +16,10 @@ import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 import javax.validation.constraints.Size;
 import org.hibernate.annotations.Type;
+import org.springframework.web.multipart.MultipartFile;
 
 @Entity
 @Table(name = "users")
@@ -28,6 +30,8 @@ import org.hibernate.annotations.Type;
 })
 public class User implements Serializable {
 
+    private final String DEFAULT_IMAGE = "default_user.jpg";
+    
     @Id
     @Column(name = "user_id")
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -39,6 +43,9 @@ public class User implements Serializable {
 
     @Size(min = 3, max = 20, message = "Hasło musi składać się z 3 do 20 znaków")
     private String password;
+
+    @Transient
+    private String repeatPassword;
 
     @Type(type = "boolean")
     private boolean enabled;
@@ -57,6 +64,11 @@ public class User implements Serializable {
 
     @OneToMany(mappedBy = "poster")
     private List<Post> posts;
+
+    @Transient
+    private MultipartFile image;
+
+    private String imageName = DEFAULT_IMAGE;
 
     public Long getId() {
         return id;
@@ -104,6 +116,30 @@ public class User implements Serializable {
 
     public void setPosts(List<Post> posts) {
         this.posts = posts;
+    }
+
+    public MultipartFile getImage() {
+        return image;
+    }
+
+    public void setImage(MultipartFile image) {
+        this.image = image;
+    }
+
+    public String getImageName() {
+        return imageName;
+    }
+
+    public void setImageName(String imageName) {
+        this.imageName = imageName;
+    }
+
+    public String getRepeatPassword() {
+        return repeatPassword;
+    }
+
+    public void setRepeatPassword(String repeatPassword) {
+        this.repeatPassword = repeatPassword;
     }
 
     @Override
