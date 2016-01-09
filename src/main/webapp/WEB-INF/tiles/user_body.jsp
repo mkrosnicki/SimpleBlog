@@ -12,6 +12,12 @@
                     <br />
                     <a href="${appContextPath}/user/${user.id}/updateAvatar"/>Zmień awatar</a>
                 </c:if>
+                <c:if test="${error ne null}">
+                    <div class="alert alert-danger">${error}</div>
+                </c:if>
+                <c:if test="${message ne null}">
+                    <div class="alert alert-success">${message}</div>
+                </c:if>
             </center>
         </div>
     </div>

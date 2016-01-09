@@ -54,6 +54,7 @@
     </definition>
     
     <definition name="user" extends="common">
+        <put-attribute name="title" value="SimpleBlog by Maku :: Profil użytkownika" />
         <put-attribute name="header" value="/WEB-INF/tiles/user_header.jsp" />
         <put-attribute name="body" value="/WEB-INF/tiles/user_body.jsp" />
     </definition>
@@ -61,6 +62,26 @@
     <definition name="changeAvatar" extends="common">
         <put-attribute name="title" value="SimpleBlog by Maku :: Zmień awatar" />
         <put-attribute name="body" value="/WEB-INF/tiles/changeAvatar_body.jsp" />
+    </definition>
+    
+    <definition name="main_users" extends="common">
+        <put-attribute name="title" value="SimpleBlog by Maku :: Lista użytkowników" />
+        <put-attribute name="body" value="/WEB-INF/tiles/mainUsers_body.jsp" />
+    </definition>
+
+    <definition name="post" extends="common">
+        <put-attribute name="title" value="SimpleBlog by Maku :: Post" />
+        <put-attribute name="body" value="/WEB-INF/tiles/post_body.jsp" />
+    </definition>
+            
+    <definition name="403" extends="common">
+        <put-attribute name="title" value="SimpleBlog by Maku :: Odmowa dostępu" />
+        <put-attribute name="body" value="/WEB-INF/tiles/403.jsp" />
+    </definition>
+    
+    <definition name="contact" extends="common">
+        <put-attribute name="title" value="SimpleBlog by Maku :: Kontakt" />
+        <put-attribute name="body" value="/WEB-INF/tiles/contact.jsp" />
     </definition>
     
 </tiles-definitions>

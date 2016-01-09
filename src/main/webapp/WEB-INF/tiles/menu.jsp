@@ -20,10 +20,10 @@
         <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
             <ul class="nav navbar-nav">
                 <li>
-                    <a href="#">Użytkownicy</a>
+                    <a href="${appContextPath}/users">Użytkownicy</a>
                 </li>
                 <li>
-                    <a href="#">Kontakt</a>
+                    <a href="${appContextPath}/contact">Kontakt</a>
                 </li>
                 <c:if test="${isAdminLogged}">
                     <li>

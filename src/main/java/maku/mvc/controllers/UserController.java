@@ -1,5 +1,7 @@
 package maku.mvc.controllers;
 
+import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 import java.util.function.Predicate;
 import java.util.logging.Level;
@@ -34,6 +36,18 @@ public class UserController {
 
     @Autowired
     PostDao postDao;
+
+    @RequestMapping(value = "/users", method = RequestMethod.GET)
+    public ModelAndView showUsers() {
+        ModelAndView model = new ModelAndView();
+        List<User> users = userDao.getAll();
+        Collections.sort(users, (User u1, User u2) -> {
+            return u1.getName().compareTo(u2.getName());
+        });
+        model.addObject("users", users);
+        model.setViewName("main_users");
+        return model;
+    }
 
     @RequestMapping(value = "/register", method = RequestMethod.GET)
     public String registerUser(Model model) {
@@ -77,10 +91,10 @@ public class UserController {
         user.getRoles().add(role);
         userDao.saveUser(user);
 
-        String webResourcePath = session.getServletContext().getRealPath("/resources/");
+        String webResourcePath = session.getServletContext().getRealPath("/resources/upload/");
         if (!image.isEmpty()) {
             try {
-                ImageHandler.save("user" + user.getId() + ".jpg", webResourcePath + "/upload/", image);
+                ImageHandler.save("user" + user.getId() + ".jpg", webResourcePath, image);
                 user.setImageName("user" + user.getId() + ".jpg");
                 userDao.saveUser(user);
                 attributes.addFlashAttribute("message", "Zarejestrowano nowego użytkownika! Możesz się teraz zalogować.");
@@ -148,7 +162,7 @@ public class UserController {
             RedirectAttributes attributes) {
 
         ModelAndView model = new ModelAndView();
-        String resourcePath = session.getServletContext().getRealPath("/resources/");
+        String uploadPath = session.getServletContext().getRealPath("/resources/upload/");
         model.setViewName("changeAvatar");
         if (image.isEmpty()) {
             model.addObject("error", "Nie wybrano żadnego obrazka!");
@@ -162,9 +176,20 @@ public class UserController {
         }
         User user = userDao.getUserById(userId);
         model.setViewName("redirect:/user/" + userId);
-        if(ImageHandler.update(user.getImageName(), resourcePath + "/upload/", image)) {
-            model.addObject("error", "Nie udało się zmienić awatara!");
+        if (!user.getImageName().equals("user_default.jpg")) {
+            if(!ImageHandler.delete(user.getImageName(), uploadPath)) {
+                attributes.addFlashAttribute("error", "Nie udało się usunąć starego awatara!");
+            }
         }
+        try {
+            ImageHandler.save("user" + user.getId() + ".jpg", uploadPath, image);
+            user.setImageName("user" + user.getId() + ".jpg");
+            userDao.saveUser(user);
+        } catch (ImageUploadException ex) {
+            attributes.addFlashAttribute("error", ex.getMessage());
+        }
+        attributes.addFlashAttribute("success", "Pomyślnie zmieniono awatar!");
         return model;
     }
+
 }

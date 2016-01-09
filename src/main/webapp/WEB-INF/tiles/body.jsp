@@ -9,10 +9,9 @@
 </p>
 <p><span class="glyphicon glyphicon-time"></span> ${post.dateOfPublish}</p>
 <hr>
-<img class="img-responsive img-circle" src="<c:url value="/resources/upload/${post.imagePath}"/>" style="width: 100px; height: 100px">
+<img class="img-responsive" src="<c:url value="/resources/upload/${post.imageName}"/>" style="width: 100%; height: 200px">
 <hr>
-<p>${post.text}</p>
-<a class="btn btn-primary" href="#">Zobacz cały post <span class="glyphicon glyphicon-chevron-right"></span></a>
+<a class="btn btn-primary" href="${appContextPath}/post/${post.id}">Zobacz posta  <span class="glyphicon glyphicon-chevron-right"></span></a>
 
 <hr>
 </c:forEach>

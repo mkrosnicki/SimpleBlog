@@ -45,5 +45,10 @@ public class HomeController {
         }
         return "login";
     }
+    
+    @RequestMapping(value = "/contact", method = RequestMethod.GET)
+    public String showContact() {
+        return "contact";
+    }
 
 }

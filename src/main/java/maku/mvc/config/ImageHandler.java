@@ -32,39 +32,24 @@ public class ImageHandler {
             throw new ImageUploadException("Nie udało się zapisać pliku!");
         }
     }
-    
+
     public static boolean delete(String fileName, String path) {
         try {
-            Files.delete(Paths.get(path + fileName));
+            Files.delete(Paths.get(path + "//" + fileName));
             return true;
         } catch (IOException ex) {
             return false;
         }
     }
-    
+
     public static boolean update(String fileName, String path, MultipartFile newImage) {
-        BufferedImage oldImage = null;
-        try {    
-            URL url = new URL(path + fileName);
-            oldImage = ImageIO.read(url);
-        } catch (IOException ex) {
+        delete(fileName, path);
+        try {
+            save(fileName, path, newImage);
+            return true;
+        } catch (ImageUploadException ex) {
             ex.printStackTrace();
             return false;
         }
-        if (delete(fileName, path)) {
-            try {
-                save(fileName, path, newImage);
-                return true;
-            } catch (ImageUploadException ex) {
-                try {
-                    ImageIO.write(oldImage, "jpg", new File(path));
-                } catch (IOException ex1) {
-                    ex1.printStackTrace();
-                    return false;
-                }
-                return false;
-            }
-        }
-        return false;
     }
 }

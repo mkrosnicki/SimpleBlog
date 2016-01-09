@@ -79,9 +79,10 @@ public class AdminController {
         User loggedUser = dao.getUserByName(request.getUserPrincipal().getName());
         post.setPoster(loggedUser);
         post.setDateOfPublish(new Date());
-        post.setImageName("post" + post.getId() + ".jpg");
-        String webResourcePath = session.getServletContext().getRealPath("/resources/");
         postDao.persistPost(post);
+        post.setImageName("post" + post.getId() + ".jpg");
+        postDao.mergePost(post);
+        String uploadPath = session.getServletContext().getRealPath("/resources/upload/");
         try {
             ImageHandler.validate(image);
         } catch (ImageUploadException e) {
@@ -89,10 +90,10 @@ public class AdminController {
             return "addpost";
         }
 
-        boolean ifDeleted = ImageHandler.delete(post.getImageName(), webResourcePath + "/upload/");
+        boolean ifDeleted = ImageHandler.delete(post.getImageName(), uploadPath);
         
         try {
-            ImageHandler.save(post.getImageName(), webResourcePath + "/upload/", image);
+            ImageHandler.save(post.getImageName(), uploadPath, image);
         } catch (ImageUploadException e) {
             model.addAttribute("message", e.getMessage());
             return "addpost";
