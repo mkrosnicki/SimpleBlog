@@ -71,6 +71,7 @@
 
     <definition name="post" extends="common">
         <put-attribute name="title" value="SimpleBlog by Maku :: Post" />
+        <put-attribute name="header" value="/WEB-INF/tiles/post_header.jsp" />
         <put-attribute name="body" value="/WEB-INF/tiles/post_body.jsp" />
     </definition>
             

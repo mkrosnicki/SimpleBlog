@@ -39,7 +39,7 @@ public class Post implements Serializable, Comparable<Post> {
     @Size(min = 3, max = 30)
     private String title;
 
-    @Column(name = "text")
+    @Column(name = "text", columnDefinition = "TEXT")
     private String text;
 
     @Column(name = "date")

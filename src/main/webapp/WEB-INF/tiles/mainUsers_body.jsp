@@ -14,7 +14,7 @@
         <c:forEach var="user" items="${users}">
             <tr>
                 <td><img class="img-responsive img-circle center-block" src="${appContextPath}/resources/upload/${user.imageName}" style="width: 50px; height: 50px"></td>
-                <td>${user.name}</td>
+                <td><a href="${appContextPath}/user/${user.id}">${user.name}</a></td>
                 <td>narazie brak</td>
                 <td>narazie brak</td>
                 <td>narazie brak</td>

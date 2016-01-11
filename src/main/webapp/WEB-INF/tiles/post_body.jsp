@@ -1,17 +1,15 @@
-<%-- 
-    Document   : post_body
-    Created on : 2016-01-08, 18:42:07
-    Author     : Maku
---%>
-
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
-<!DOCTYPE html>
-<html>
-    <head>
-        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <title>JSP Page</title>
-    </head>
-    <body>
-        <h1>Hello World!</h1>
-    </body>
-</html>
+
+<img src="${appContextPath}/resources/upload/${post.imageName}" class="img-responsive" style="width: 100%"/>
+<br />
+<div class="row">
+    <div class="col-md-6 text-center">
+        <div class="well">Dodany przez <a href="${appContextPath}/user/${post.poster.id}">${post.poster.name}</a></div>
+    </div>
+    <div class="col-md-6">
+        <div class="well text-center">Data dodania : ${post.dateOfPublish}</div>
+    </div>
+</div>
+<div class="well text-justify">
+    ${post.text}
+</div>
