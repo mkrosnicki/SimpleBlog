@@ -86,6 +86,11 @@
             function formSubmit() {
                 document.getElementById("logoutForm").submit();
             }
+
+            $("#addCommentButton").click(function () {
+                $("#addCommentForm").toggle(500);
+            }
+            );
         </script>
 
     </body>

@@ -3,6 +3,7 @@ package maku.mvc.dao;
 import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import javax.persistence.PersistenceContextType;
 import javax.persistence.Query;
 import maku.mvc.domain.Comment;
 import maku.mvc.domain.Post;
@@ -15,7 +16,7 @@ import org.springframework.transaction.annotation.Transactional;
 @Transactional
 public class PostDaoImpl implements PostDao {
 
-    @PersistenceContext
+    @PersistenceContext(type = PersistenceContextType.EXTENDED)
     private EntityManager em;
 
     @Override
@@ -47,7 +48,7 @@ public class PostDaoImpl implements PostDao {
     public List<Post> getByUser(User user) {
         Query query = null;
         try {
-        query = em.createQuery("SELECT p FROM Post p WHERE p.poster.id = :posterId");
+            query = em.createQuery("SELECT p FROM Post p WHERE p.poster.id = :posterId");
         } catch (Exception e) {
             e.printStackTrace();
             return null;
@@ -82,8 +83,13 @@ public class PostDaoImpl implements PostDao {
     }
 
     @Override
-    public List<Comment> getCommentByUser(User user) {
+    public List<Comment> getCommentsByUser(User user) {
         return (List<Comment>) em.createNamedQuery("SELECT c FROM Comment c WHERE c.user.id = :user.id");
+    }
+
+    @Override
+    public List<Comment> getCommentsByPost(Post post) {
+        return (List<Comment>) em.createQuery("SELECT c FROM Comment c WHERE c.post.id = :id").setParameter("id", post.getId()).getResultList();
     }
 
     @Override

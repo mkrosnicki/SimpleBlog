@@ -3,6 +3,7 @@ package maku.mvc.domain;
 import java.io.Serializable;
 import java.util.Date;
 import java.util.Objects;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -11,6 +12,8 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 
 @Entity
 @Table(name = "comments")
@@ -24,9 +27,11 @@ public class Comment implements Serializable {
     @Column(name = "text")
     private String text;
 
-    @Column(name = "publisher")
+    @ManyToOne(cascade = {CascadeType.MERGE})
+    @JoinColumn(name = "user_id", referencedColumnName = "user_id")
     private User publisher;
 
+    @Temporal(TemporalType.DATE)
     @Column(name = "date")
     private Date dateOfPublish;
 

@@ -30,7 +30,9 @@ public interface PostDao {
     
     public Comment getCommentById(Long id);
     
-    public List<Comment> getCommentByUser(User user);
+    public List<Comment> getCommentsByUser(User user);
+    
+    public List<Comment> getCommentsByPost(Post post);
     
     public void removeComment(Long id);
     

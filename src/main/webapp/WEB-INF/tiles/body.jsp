@@ -6,7 +6,7 @@
     <h1>${post.title}</h1>
     <p class="lead">
     <h5>Dodany przez <a href="<c:url value="/user/${post.poster.id}"/>">${post.poster.name}</a></h5>
-</p>
+    </p>
 <p><span class="glyphicon glyphicon-time"></span> ${post.dateOfPublish}</p>
 <hr>
 <img class="img-responsive" src="<c:url value="/resources/upload/${post.imageName}"/>" style="width: 100%; height: 200px">

@@ -30,8 +30,9 @@ import org.springframework.web.multipart.MultipartFile;
 })
 public class User implements Serializable {
 
+    @Transient
     private final String DEFAULT_IMAGE = "default_user.jpg";
-    
+
     @Id
     @Column(name = "user_id")
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -50,7 +51,10 @@ public class User implements Serializable {
     @Type(type = "boolean")
     private boolean enabled;
 
-    @ManyToMany(fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "publisher")
+    private List<Comment> comments;
+
+    @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(
             name = "user_roles",
             joinColumns = {
@@ -140,6 +144,14 @@ public class User implements Serializable {
 
     public void setRepeatPassword(String repeatPassword) {
         this.repeatPassword = repeatPassword;
+    }
+
+    public List<Comment> getComments() {
+        return comments;
+    }
+
+    public void setComments(List<Comment> comments) {
+        this.comments = comments;
     }
 
     @Override
