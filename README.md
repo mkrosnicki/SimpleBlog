@@ -4,7 +4,8 @@ TRWAJĄ PRACE -> POPRAWIANIE KILKU FUNKCJI + NAPISANIE TESTÓW
 
 Prosty blog internetowy.
 - możliwosc rejestrowania sie i logowania
-- przegladanie dodanych przez admina postow
+- dodawanie, edytowanie i usuwanie postow (tylko admin)
+- przegladanie postow, profili uzytkownikow
 - dodawanie komentarzy
 - aktualizowanie swojego profilu (zmiana obrazka)
 
