@@ -2,7 +2,7 @@
 
 TRWAJĄ PRACE -> POPRAWIANIE KILKU FUNKCJI + NAPISANIE TESTÓW
 
-Prosty blog internetowy. z mozliwoscia logowania, rejestrowania, dodawania komentarzy, wczytywania obrazkow.
+Prosty blog internetowy.
 - możliwosc rejestrowania sie i logowania
 - przegladanie dodanych przez admina postow
 - dodawanie komentarzy
@@ -13,5 +13,6 @@ Technologie :
 - Spring MVC
 - JSP
 - Apache Tiles
+- MySQL
 - Bootstrap
 - jQuery
