@@ -32,67 +32,28 @@
     </head>
 
     <body>
-
+        
         <tiles:insertAttribute name="menu" /> 
-
-        <!-- Page Content -->
+        
         <div class="container">
-
+            
+            
             <div class="row">
 
-
-                <!-- Blog Entries Column -->
                 <div class="col-md-8">
-
-                    <tiles:insertAttribute name="header" />
-
+                    
                     <tiles:insertAttribute name="body" />
-
+                    
                 </div>
-
-                <!-- Blog Sidebar Widgets Column -->
-                <div class="col-md-4">
-
-                    <tiles:insertAttribute name="rightside" />
-
-                </div>
-
             </div>
-            <!-- /.row -->
-
-            <hr>
-
-            <!-- Footer -->
-            <footer>
-                <div class="row">
-                    <div class="col-lg-12">
-                        <p>Copyright &copy; Your Website 2014</p>
-                    </div>
-                    <!-- /.col-lg-12 -->
-                </div>
-                <!-- /.row -->
-            </footer>
-
+            
         </div>
-        <!-- /.container -->
-
+        
         <!-- jQuery -->
         <script src="<c:url value="/resources/js/jquery.js" />" ></script>
 
         <!-- Bootstrap Core JavaScript -->
         <script src="<c:url value="/resources/js/bootstrap.min.js"/>"></script>
-
-        <script>
-            function formSubmit() {
-                document.getElementById("logoutForm").submit();
-            }
-
-            $("#addCommentButton").click(function () {
-                $("#addCommentForm").toggle(500);
-            }
-            );
-        </script>
-
     </body>
 
 </html>

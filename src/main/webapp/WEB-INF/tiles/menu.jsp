@@ -1,4 +1,5 @@
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
+<%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!DOCTYPE html>
 
 
@@ -13,20 +14,22 @@
                 <span class="icon-bar"></span>
                 <span class="icon-bar"></span>
             </button>
-            <a class="navbar-brand" href="#">Start Bootstrap</a>
+            <a class="navbar-brand" href="${appContextPath}">Strona główna</a>
         </div>
         <!-- Collect the nav links, forms, and other content for toggling -->
         <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
             <ul class="nav navbar-nav">
                 <li>
-                    <a href="#">About</a>
+                    <a href="${appContextPath}/users">Użytkownicy</a>
                 </li>
                 <li>
-                    <a href="#">Services</a>
+                    <a href="${appContextPath}/contact">Kontakt</a>
                 </li>
-                <li>
-                    <a href="#">Contact</a>
-                </li>
+                <c:if test="${isAdminLogged}">
+                    <li>
+                        <a href="${pageContext.request.contextPath}/admin">Panel admina</a>
+                    </li>
+                </c:if>
             </ul>
         </div>
         <!-- /.navbar-collapse -->

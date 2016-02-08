@@ -1,24 +1,28 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
-package maku.mvc.domain;
+package maku.mvc.entities;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
+import javax.persistence.PrimaryKeyJoinColumns;
 import javax.persistence.Table;
 
 @Entity
 @Table(name = "ROLE")
+@NamedQueries({
+    @NamedQuery(name = "Role.findByAuthority", query = "SELECT r FROM Role r WHERE r.authority = :authority")
+})
 public class Role implements Serializable {
 
     @Id
@@ -26,20 +30,11 @@ public class Role implements Serializable {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
-    @Column(name = "authority")
+    @Column(name = "authority", unique = true)
     private String authority;
 
-    @ManyToMany
-    @JoinTable(
-            name = "user_roles",
-            joinColumns = {
-                @JoinColumn(name = "authority", referencedColumnName = "authority")
-            },
-            inverseJoinColumns = {
-                @JoinColumn(name = "username", referencedColumnName = "username")
-            }
-    )
-    private List<User> users;
+    @ManyToMany(mappedBy = "roles", fetch = FetchType.EAGER)
+    private List<User> users = new ArrayList<>();
 
     public Long getId() {
         return id;
@@ -63,6 +58,11 @@ public class Role implements Serializable {
 
     public void setUsers(List<User> users) {
         this.users = users;
+    }
+
+    @Override
+    public String toString() {
+        return "Role{" + "id=" + id + ", authority=" + authority + ", users=" + users + '}';
     }
 
 }

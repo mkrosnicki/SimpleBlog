@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+        xmlns:sec="http://www.springframework.org/schema/security"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+       xmlns:mvc="http://www.springframework.org/schema/mvc"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xsi:schemaLocation="
+                http://www.springframework.org/schema/security
+                http://www.springframework.org/schema/security/spring-security-4.0.xsd
+                http://www.springframework.org/schema/mvc 
+                http://www.springframework.org/schema/mvc/spring-mvc-4.0.xsd
+                http://www.springframework.org/schema/beans 
+                http://www.springframework.org/schema/beans/spring-beans-4.0.xsd
+                http://www.springframework.org/schema/context 
+                http://www.springframework.org/schema/context/spring-context-4.0.xsd
+                http://www.springframework.org/schema/tx
+                http://www.springframework.org/schema/tx/spring-tx-3.0.xsd" xmlns:tx="http://www.springframework.org/schema/tx">
+    
+    <import resource="classpath:**security-context.xml"/>
+    
+    <!--    WYKRYWANIE BEANOW W TYM PAKIECIE-->
+    <context:component-scan base-package="maku.mvc.dao" /> 
+    <context:component-scan base-package="maku.mvc.controllers" /> 
+    <!--    POZWALA KORZYSTAĆ Z ADNOTACJI W KLASACH SKONFIGUROWANYCH RĘCZNIE W TYM PLIKU-->
+    <context:annotation-config />
+    <!--    POZWALA NA AUTOMATYCZNĄ OBSŁUGĘ ADNOTACJI SŁUŻĄCYCH DO WALIDACJI PÓL-->
+    <mvc:annotation-driven />
+    <!--    POZWALA DODAWAĆ CSS I JS DO JSP-->
+    <mvc:resources mapping="/resources/**" location="/resources/"  
+	cache-period="31556926"/>
+    <!--    POZWALA NA ADNOTACJE SECURE-->
+    <sec:global-method-security secured-annotations="enabled" pre-post-annotations="enabled" />
+    
+    	<bean id="multipartResolver"
+		class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
+		<property name="maxUploadSize" value="250000" />
+	</bean>
+    
+    <!--    JPA VENDOR ADAPTER-->
+    <bean id="jpaVendorAdapter" class="org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter">
+        <property name="database" value="MYSQL" />
+        <property name="databasePlatform" value="org.hibernate.dialect.MySQLDialect" />
+    </bean>
+
+    <!--    TAG ODPOWIEDZIALNY ZA WYKRYWANIE ADNOTACJI NP. @COMPONENT I REJESTROWANIE ICH JAKO BEANÓW-->
+    <tx:annotation-driven />
+    
+    <!--    APACHE TILES-->
+    <bean id="tilesConfigurer" class="org.springframework.web.servlet.view.tiles3.TilesConfigurer">
+        <property name="definitions">
+            <list>
+                <value>/WEB-INF/tiles/general.xml</value>
+            </list>
+        </property>
+    </bean>
+    
+    <bean id="viewResolver" class="org.springframework.web.servlet.view.UrlBasedViewResolver">
+        <property name="viewClass" value="org.springframework.web.servlet.view.tiles3.TilesView"/>
+    </bean>
+    
+    
+</beans>
