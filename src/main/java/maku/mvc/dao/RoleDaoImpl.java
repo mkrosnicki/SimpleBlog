@@ -2,11 +2,11 @@ package maku.mvc.dao;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
-import maku.mvc.domain.Role;
-import org.springframework.stereotype.Service;
+import maku.mvc.entities.Role;
+import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
-@Service
+@Repository
 @Transactional
 public class RoleDaoImpl implements RoleDao {
 

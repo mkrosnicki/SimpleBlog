@@ -1,9 +1,5 @@
 package maku.mvc.controllers;
 
-import java.io.File;
-import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Paths;
 import java.util.Date;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
@@ -11,10 +7,9 @@ import javax.validation.Valid;
 import maku.mvc.config.ImageUploadException;
 import maku.mvc.config.ImageHandler;
 import maku.mvc.dao.UserDao;
-import maku.mvc.domain.Post;
-import maku.mvc.domain.PostDao;
-import maku.mvc.domain.User;
-import org.apache.commons.io.FileUtils;
+import maku.mvc.entities.Post;
+import maku.mvc.dao.PostDao;
+import maku.mvc.entities.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.stereotype.Controller;
@@ -83,10 +78,8 @@ public class AdminController {
         post.setImageName("post" + post.getId() + ".jpg");
         postDao.mergePost(post);
         String uploadPath = session.getServletContext().getRealPath("/resources/upload/");
-        try {
-            ImageHandler.validate(image);
-        } catch (ImageUploadException e) {
-            model.addAttribute("message", e.getMessage());
+        if(!ImageHandler.validate(image)) {
+            model.addAttribute("message", "Akceptowany jedynie format JPG!");
             return "addpost";
         }
 
@@ -113,8 +106,8 @@ public class AdminController {
     @RequestMapping(value = "/edit/{id}", method = RequestMethod.GET)
     public ModelAndView editPost(@PathVariable("id") Long id) {
         ModelAndView model = new ModelAndView();
-        System.out.println(postDao.getPostById(id) == null);
-        model.addObject("post", postDao.getPostById(id));
+        System.out.println(postDao.getById(id) == null);
+        model.addObject("post", postDao.getById(id));
         model.setViewName("editpost");
         return model;
     }

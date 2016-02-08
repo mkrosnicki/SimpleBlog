@@ -5,12 +5,12 @@ import javax.persistence.EntityManager;
 import javax.persistence.NoResultException;
 import javax.persistence.PersistenceContext;
 import javax.persistence.PersistenceContextType;
-import maku.mvc.domain.Role;
-import maku.mvc.domain.User;
-import org.springframework.stereotype.Service;
+import maku.mvc.entities.Role;
+import maku.mvc.entities.User;
+import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
-@Service
+@Repository
 @Transactional
 public class UserDaoImpl implements UserDao {
 
@@ -85,6 +85,11 @@ public class UserDaoImpl implements UserDao {
             return null;
         }
         
+    }
+    
+    @Override
+    public void deleteAll() {
+        em.createQuery("DELETE u FROM User u").executeUpdate();
     }
 
 }

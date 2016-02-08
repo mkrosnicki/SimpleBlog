@@ -1,4 +1,4 @@
-package maku.mvc.domain;
+package maku.mvc.entities;
 
 import java.io.Serializable;
 import java.util.Date;
@@ -52,7 +52,7 @@ public class Post implements Serializable, Comparable<Post> {
     @OneToMany(mappedBy = "post")
     private List<Comment> comments;
 
-    @ManyToOne()
+    @ManyToOne(cascade = {CascadeType.MERGE})
     @JoinColumn(name = "user_id", referencedColumnName = "user_id")
     private User poster;
 

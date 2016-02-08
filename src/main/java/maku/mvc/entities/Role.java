@@ -1,4 +1,4 @@
-package maku.mvc.domain;
+package maku.mvc.entities;
 
 import java.io.Serializable;
 import java.util.ArrayList;

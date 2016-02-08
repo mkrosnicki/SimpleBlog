@@ -5,18 +5,16 @@
  */
 package maku.mvc.controllers;
 
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 import javax.servlet.http.HttpServletRequest;
-import javax.swing.text.DateFormatter;
 import javax.validation.Valid;
+import maku.mvc.dao.CommentDao;
 import maku.mvc.dao.UserDao;
-import maku.mvc.domain.Comment;
-import maku.mvc.domain.Post;
-import maku.mvc.domain.PostDao;
-import maku.mvc.domain.User;
+import maku.mvc.entities.Comment;
+import maku.mvc.entities.Post;
+import maku.mvc.dao.PostDao;
+import maku.mvc.entities.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
@@ -33,15 +31,18 @@ public class PostController {
 
     @Autowired
     UserDao userDao;
+    
+    @Autowired
+    CommentDao commentDao;
 
     @RequestMapping(value = "/post/{postId}", method = RequestMethod.GET)
     public ModelAndView showPost(@PathVariable(value = "postId") Long postId) {
         ModelAndView model = new ModelAndView();
-        Post post = postDao.getPostById(postId);
+        Post post = postDao.getById(postId);
         model.addObject("post", post);
         // duplikujace sie obiekty - zamienić na Set? 
-        //List<Comment> comments = post.getComments(); 
-        model.addObject("comments", postDao.getCommentsByPost(post));
+        List<Comment> comments = commentDao.getCommentsByPost(post);
+        model.addObject("comments", commentDao.getCommentsByPost(post));
         model.addObject("comment", new Comment());
         model.setViewName("post");
         return model;
@@ -55,14 +56,14 @@ public class PostController {
             return model;
         }
         Date date = new Date();
-        Post post = postDao.getPostById(postId);
+        Post post = postDao.getById(postId);
         String publisherName = request.getUserPrincipal().getName();
         User publisher = userDao.getUserByName(publisherName);
         comment.setPost(post);
         comment.setPublisher(publisher);
         comment.setDateOfPublish(date);
         //postDao.persistComment(comment);
-        postDao.mergeComment(comment);
+        commentDao.merge(comment);
         model.setViewName("redirect:/post/" + postId);
         return model;
     }

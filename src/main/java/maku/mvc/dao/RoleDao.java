@@ -5,11 +5,12 @@
  */
 package maku.mvc.dao;
 
-import maku.mvc.domain.Role;
+import maku.mvc.entities.Role;
+import org.springframework.stereotype.Repository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-@Service
+@Repository
 @Transactional
 public interface RoleDao {
     

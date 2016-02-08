@@ -1,12 +1,12 @@
 package maku.mvc.dao;
 
 import java.util.List;
-import maku.mvc.domain.Role;
-import maku.mvc.domain.User;
-import org.springframework.stereotype.Service;
+import maku.mvc.entities.Role;
+import maku.mvc.entities.User;
+import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
-@Service
+@Repository
 @Transactional
 public interface UserDao {
 
@@ -31,4 +31,6 @@ public interface UserDao {
     void addRole(Role role);
 
     void saveRole(Role role);
+    
+    void deleteAll();
 }

@@ -31,7 +31,7 @@
             <br />
             Liczba postów : <b>${numberOfPosts}</b>
             <br />
-            Liczba komentarzy : <b>${user.comments.size()}</b>
+            Liczba komentarzy : <b>${numberOfComments}</b>
             <br />
         </div>
     </div>

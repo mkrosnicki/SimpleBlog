@@ -11,11 +11,13 @@ import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 import maku.mvc.config.ImageHandler;
 import maku.mvc.config.ImageUploadException;
+import maku.mvc.dao.CommentDao;
 import maku.mvc.dao.UserDao;
-import maku.mvc.domain.Post;
-import maku.mvc.domain.PostDao;
-import maku.mvc.domain.Role;
-import maku.mvc.domain.User;
+import maku.mvc.entities.Post;
+import maku.mvc.dao.PostDao;
+import maku.mvc.entities.Comment;
+import maku.mvc.entities.Role;
+import maku.mvc.entities.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -36,6 +38,9 @@ public class UserController {
 
     @Autowired
     PostDao postDao;
+
+    @Autowired
+    CommentDao commentDao;
 
     @RequestMapping(value = "/users", method = RequestMethod.GET)
     public ModelAndView showUsers() {
@@ -76,10 +81,8 @@ public class UserController {
             return "register";
         }
         if (!image.isEmpty()) {
-            try {
-                ImageHandler.validate(image);
-            } catch (ImageUploadException e) {
-                model.addAttribute("registerError", e.getMessage());
+            if (!ImageHandler.validate(image)) {
+                model.addAttribute("registerError", "Akceptowany jedynie format JPG!");
                 return "register";
             }
         }
@@ -114,6 +117,9 @@ public class UserController {
         ModelAndView model = new ModelAndView();
         User user = userDao.getUserById(userId);;
         List<Post> posts = postDao.getByUser(user);
+        List<Comment> comments = commentDao.getCommentsByUser(user);
+        model.addObject("numberOfPosts", posts.size());
+        model.addObject("numberOfComments", comments.size());
         model.addObject("user", user);
         if (user.isEnabled()) {
             model.addObject("status", "Aktywne");
@@ -129,11 +135,6 @@ public class UserController {
             model.addObject("userRole", "Użytkownik");
         }
         model.addObject("isAdminUser", isAdmin);
-        if (posts != null) {
-            model.addObject("numberOfPosts", postDao.getByUser(user).size());
-        } else {
-            model.addObject("numberOfPosts", 0);
-        }
         model.setViewName("user");
         return model;
     }
@@ -168,16 +169,14 @@ public class UserController {
             model.addObject("error", "Nie wybrano żadnego obrazka!");
             return model;
         }
-        try {
-            ImageHandler.validate(image);
-        } catch (ImageUploadException ex) {
-            model.addObject("error", ex.getMessage());
+        if (!ImageHandler.validate(image)) {
+            model.addObject("error", "Akceptowany jedynie format JPG!");
             return model;
         }
         User user = userDao.getUserById(userId);
         model.setViewName("redirect:/user/" + userId);
         if (!user.getImageName().equals("user_default.jpg")) {
-            if(!ImageHandler.delete(user.getImageName(), uploadPath)) {
+            if (!ImageHandler.delete(user.getImageName(), uploadPath)) {
                 attributes.addFlashAttribute("error", "Nie udało się usunąć starego awatara!");
             }
         }

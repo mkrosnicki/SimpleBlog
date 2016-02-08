@@ -16,12 +16,15 @@ import org.apache.commons.io.FileUtils;
 import org.springframework.web.multipart.MultipartFile;
 
 public class ImageHandler {
-
-    public static void validate(Object o) throws ImageUploadException {
-        MultipartFile file = (MultipartFile) o;
-        if (!file.getContentType().equals("image/jpeg")) {
-            throw new ImageUploadException("Akceptowany jedynie format JPG!");
-        }
+    
+    /**
+     * Checks whether the file's format is JPG
+     * @param file
+     *        file to be validated
+     * @return true if file's format is JPG
+     */
+    public static boolean validate(MultipartFile file) {
+        return file.getContentType().equals("image/jpeg");
     }
 
     public static void save(String fileName, String path, MultipartFile image) throws ImageUploadException {
