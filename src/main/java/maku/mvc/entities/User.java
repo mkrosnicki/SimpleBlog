@@ -1,4 +1,4 @@
-package maku.mvc.domain;
+package maku.mvc.entities;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -51,7 +51,7 @@ public class User implements Serializable {
     @Type(type = "boolean")
     private boolean enabled;
 
-    @OneToMany(mappedBy = "publisher")
+    @OneToMany(mappedBy = "user")
     private List<Comment> comments;
 
     @ManyToMany(fetch = FetchType.LAZY)
@@ -66,7 +66,7 @@ public class User implements Serializable {
     )
     private List<Role> roles = new ArrayList<>();
 
-    @OneToMany(mappedBy = "poster")
+    @OneToMany(mappedBy = "user")
     private List<Post> posts;
 
     @Transient

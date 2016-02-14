@@ -2,7 +2,7 @@ package maku.mvc.dao;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
-import maku.mvc.domain.Role;
+import maku.mvc.entities.Role;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 

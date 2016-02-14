@@ -1,4 +1,4 @@
-package maku.mvc.domain;
+package maku.mvc.entities;
 
 import java.io.Serializable;
 import java.util.Date;
@@ -29,7 +29,7 @@ public class Comment implements Serializable {
 
     @ManyToOne(cascade = {CascadeType.MERGE})
     @JoinColumn(name = "user_id", referencedColumnName = "user_id")
-    private User publisher;
+    private User user;
 
     @Temporal(TemporalType.DATE)
     @Column(name = "date")
@@ -56,11 +56,11 @@ public class Comment implements Serializable {
     }
 
     public User getPublisher() {
-        return publisher;
+        return user;
     }
 
     public void setPublisher(User publisher) {
-        this.publisher = publisher;
+        this.user = publisher;
     }
 
     public Date getDateOfPublish() {
@@ -100,7 +100,7 @@ public class Comment implements Serializable {
         if (!Objects.equals(this.text, other.text)) {
             return false;
         }
-        if (!Objects.equals(this.publisher, other.publisher)) {
+        if (!Objects.equals(this.user, other.user)) {
             return false;
         }
         if (!Objects.equals(this.dateOfPublish, other.dateOfPublish)) {
@@ -114,7 +114,7 @@ public class Comment implements Serializable {
 
     @Override
     public String toString() {
-        return "Comment{" + "id=" + id + ", text=" + text + ", publisher=" + publisher + ", dateOfPublish=" + dateOfPublish + ", post=" + post + '}';
+        return "Comment{" + "id=" + id + ", text=" + text + ", publisher=" + user + ", dateOfPublish=" + dateOfPublish + ", post=" + post + '}';
     }
 
 }

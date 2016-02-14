@@ -1,20 +1,15 @@
 package maku.mvc.controllers;
 
-import java.io.File;
-import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Paths;
 import java.util.Date;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 import maku.mvc.config.ImageUploadException;
 import maku.mvc.config.ImageHandler;
-import maku.mvc.dao.UserDao;
-import maku.mvc.domain.Post;
-import maku.mvc.domain.PostDao;
-import maku.mvc.domain.User;
-import org.apache.commons.io.FileUtils;
+import maku.mvc.entities.Post;
+import maku.mvc.dao.PostDao;
+import maku.mvc.entities.User;
+import maku.mvc.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.stereotype.Controller;
@@ -34,7 +29,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 public class AdminController {
 
     @Autowired
-    UserDao dao;
+    UserService userService;
 
     @Autowired
     PostDao postDao;
@@ -49,9 +44,9 @@ public class AdminController {
 
     @RequestMapping(value = "/users", method = RequestMethod.GET)
     public ModelAndView showUsers() {
-        System.out.println(dao.getAll().get(0).getRoles());
+        System.out.println(userService.getAll().get(0).getRoles());
         ModelAndView model = new ModelAndView();
-        model.addObject("users", dao.getAll());
+        model.addObject("users", userService.getAll());
         model.setViewName("users");
         return model;
     }
@@ -76,7 +71,7 @@ public class AdminController {
             Model model,
             @RequestParam(value = "image", required = false) MultipartFile image,
             HttpSession session) {
-        User loggedUser = dao.getUserByName(request.getUserPrincipal().getName());
+        User loggedUser = userService.getUserByName(request.getUserPrincipal().getName());
         post.setPoster(loggedUser);
         post.setDateOfPublish(new Date());
         postDao.persistPost(post);
@@ -105,7 +100,7 @@ public class AdminController {
 
     @RequestMapping(value = "/delete/{id}")
     public String deletePost(@PathVariable("id") Long id, RedirectAttributes attributes) {
-        postDao.removePost(id);
+        postDao.deletePost(id);
         attributes.addFlashAttribute("message", "Pomyślnie usunięto post!");
         return "redirect:/admin/posts";
     }

@@ -1,34 +1,79 @@
 package maku.mvc.dao;
 
 import java.util.List;
-import maku.mvc.domain.Role;
-import maku.mvc.domain.User;
+import javax.persistence.EntityManager;
+import javax.persistence.NoResultException;
+import javax.persistence.PersistenceContext;
+import javax.persistence.PersistenceContextType;
+import maku.mvc.entities.Role;
+import maku.mvc.entities.User;
+import org.springframework.stereotype.Repository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-@Service
+@Repository
 @Transactional
-public interface UserDao {
+public class UserDao {
 
-    List<User> getAll();
+    private final String GET_ALL_USERS = "SELECT u FROM User u";
+    private final String USER_BY_NAME = "SELECT u FROM User u WHERE u.name = :name";
+    private final String DELETE_ALL_USERS = "DELETE FROM User";
 
-    User getUserByName(String name);
+    private final String DELETE_ALL_ROLES = "DELETE FROM Role";
 
-    User getUserById(Long id);
-    
-    void addUser(User user);
+    @PersistenceContext(name = "persistenceUnit", type = PersistenceContextType.EXTENDED)
+    private EntityManager em;
 
-    void saveUser(User user);
+    public List<User> getAll() {
+        return (List<User>) em.createQuery(GET_ALL_USERS).getResultList();
+    }
 
-    void deleteUser(User user);
+    public User getUserById(Long id) {
+        return em.find(User.class, id);
+    }
 
-    Role getRoleById(Long id);
+    public User getUserByName(String name) {
+        return em.createQuery(USER_BY_NAME, User.class).setParameter("name", name).getSingleResult();
+    }
 
-    Role getRoleByAuthority(String authority);
-    
-    List<Role> getRolesByAuthority(String authority);
+    public void persist(User user) {
+        em.persist(user);
+    }
 
-    void addRole(Role role);
+    public void merge(User user) {
+        em.merge(user);
+    }
 
-    void saveRole(Role role);
+    public void delete(User user) {
+        em.remove(user);
+    }
+
+    public void deleteAllUsers() {
+        em.createQuery(DELETE_ALL_USERS).executeUpdate();
+    }
+
+    public Role getRoleById(Long id) {
+        return em.find(Role.class, id);
+    }
+
+    public Role getRoleByAuthority(String authority) {
+        return (Role) em.createNamedQuery("Role.findByAuthority").setParameter("authority", authority).getSingleResult();
+    }
+
+    public List<Role> getRolesByAuthority(String authority) {
+        return (List<Role>) em.createNamedQuery("Role.findByAuthority").setParameter("authority", authority).getResultList();
+    }
+
+    public void persistRole(Role role) {
+        em.persist(role);
+    }
+
+    public void mergeRole(Role role) {
+        em.merge(role);
+    }
+
+    public void deleteAllRoles() {
+        em.createQuery(DELETE_ALL_ROLES).executeUpdate();
+    }
+
 }

@@ -1,4 +1,4 @@
-package maku.mvc.domain;
+package maku.mvc.entities;
 
 import java.io.Serializable;
 import java.util.Date;
@@ -54,7 +54,7 @@ public class Post implements Serializable, Comparable<Post> {
 
     @ManyToOne()
     @JoinColumn(name = "user_id", referencedColumnName = "user_id")
-    private User poster;
+    private User user;
 
     @Transient
     private MultipartFile image;
@@ -86,11 +86,11 @@ public class Post implements Serializable, Comparable<Post> {
     }
 
     public User getPoster() {
-        return poster;
+        return user;
     }
 
     public void setPoster(User poster) {
-        this.poster = poster;
+        this.user = poster;
     }
 
     public Date getDateOfPublish() {
@@ -149,7 +149,7 @@ public class Post implements Serializable, Comparable<Post> {
         if (!Objects.equals(this.text, other.text)) {
             return false;
         }
-        if (!Objects.equals(this.poster, other.poster)) {
+        if (!Objects.equals(this.user, other.user)) {
             return false;
         }
         if (!Objects.equals(this.dateOfPublish, other.dateOfPublish)) {
@@ -163,7 +163,7 @@ public class Post implements Serializable, Comparable<Post> {
 
     @Override
     public String toString() {
-        return "Post{" + "id=" + id + ", title=" + title + ", text=" + text + ", poster=" + poster + ", dateOfPublish=" + dateOfPublish + ", comments=" + comments + '}';
+        return "Post{" + "id=" + id + ", title=" + title + ", text=" + text + ", poster=" + user + ", dateOfPublish=" + dateOfPublish + ", comments=" + comments + '}';
     }
 
     @Override

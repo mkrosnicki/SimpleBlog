@@ -5,9 +5,6 @@
 <div class="well">
     <h4>Panel logowania</h4>
     <br />
-    <c:if test="${isUserLogged}">
-
-    </c:if>
     <c:choose>
         <c:when test="${isUserLogged}">
 
@@ -23,7 +20,7 @@
 
         </c:when>
         <c:otherwise>
-            <c:url value="/j_spring_security_check" var="loginUrl" />
+            <c:url value="/login" var="loginUrl" />
             <form class="form-horizontal" action="${loginUrl}" method="POST">
                 <input type="text" name="username" class="form-control" placeholder="Nazwa użytkownika">
                 <input type="password" name="password" class="form-control" id="password" placeholder="Twoje hasło">
