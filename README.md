@@ -3,10 +3,7 @@
 TRWA GRUNTOWNA PRZEBUDOWA APLIKACJI + TWORZENIE TESTÓW JEDNOSTKOWYCH
 
 Prosty blog internetowy.
-<ul>
-<li>możliwosc rejestrowania sie i logowania</li>
-</ul>
-- 
+- możliwosc rejestrowania sie i logowania</li>
 - dodawanie, edytowanie i usuwanie postow (tylko admin)
 - przegladanie postow, profili uzytkownikow
 - dodawanie komentarzy
