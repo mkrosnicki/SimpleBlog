@@ -1,6 +1,8 @@
 # SimpleBlog
 
+```
 TRWA GRUNTOWNA PRZEBUDOWA APLIKACJI + TWORZENIE TESTÓW JEDNOSTKOWYCH
+```
 
 Prosty blog internetowy.
 - możliwosc rejestrowania sie i logowania</li>
