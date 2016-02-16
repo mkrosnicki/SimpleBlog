@@ -11,6 +11,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
 import org.springframework.web.multipart.MultipartResolver;
 import org.springframework.web.multipart.commons.CommonsMultipartResolver;
+import org.springframework.web.multipart.support.MultipartFilter;
 import org.springframework.web.multipart.support.StandardServletMultipartResolver;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
@@ -26,7 +27,7 @@ import org.springframework.web.servlet.view.tiles3.TilesView;
 @EnableWebMvc
 @Configuration
 @ComponentScan("maku.mvc.controllers")
-@Import({ SecurityConfig.class })
+@Import({SecurityConfig.class})
 public class WebMvcConfig extends WebMvcConfigurerAdapter {
 
     @Bean
@@ -46,7 +47,7 @@ public class WebMvcConfig extends WebMvcConfigurerAdapter {
         return tilesConfigurer;
     }
 
-    @Bean(name = "multipartResolver")
+    @Bean(name = "filterMultipartResolver")
     public CommonsMultipartResolver createMultipartResolver() {
         CommonsMultipartResolver resolver = new CommonsMultipartResolver();
         resolver.setDefaultEncoding("utf-8");

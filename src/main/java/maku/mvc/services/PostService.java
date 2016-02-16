@@ -26,12 +26,12 @@ public class PostService {
     @Autowired
     PostDao postDao;
 
-    public List<Post> getAllPosts() {
-        return postDao.getAllPosts();
+    public List<Post> getAll() {
+        return postDao.getAll();
     }
 
     public List<Post> getPostsSortedByDate(boolean reversed) {
-        List<Post> posts = getAllPosts();
+        List<Post> posts = getAll();
         Collections.sort(posts,
                 (Post p1, Post p2) -> {
                     return p1.getDateOfPublish().compareTo(p2.getDateOfPublish());
@@ -42,19 +42,19 @@ public class PostService {
         return posts;
     }
 
-    public void persistPost(Post post) {
+    public void persist(Post post) {
         postDao.persistPost(post);
     }
 
-    public void mergePost(Post post) {
+    public void merge(Post post) {
         postDao.mergePost(post);
     }
 
-    public Post getPostById(Long id) {
+    public Post getById(Long id) {
         return postDao.getPostById(id);
     }
 
-    public Post getPostByTitle(String title) {
+    public Post getByTitle(String title) {
         return postDao.getPostByTitle(title);
     }
 
@@ -62,12 +62,16 @@ public class PostService {
         return postDao.getPostsByUser(user);
     }
 
-    public void removePost(Post post) {
+    public void delete(Post post) {
         postDao.deletePost(post);
     }
 
-    public void removePost(Long id) {
+    public void delete(Long id) {
         postDao.deletePost(id);
+    }
+    
+    public void deleteAll() {
+        postDao.deleteAll();
     }
 
 }

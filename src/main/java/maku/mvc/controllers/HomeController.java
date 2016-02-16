@@ -4,6 +4,7 @@ import java.util.Collections;
 import java.util.List;
 import maku.mvc.entities.Post;
 import maku.mvc.dao.PostDao;
+import maku.mvc.services.PostService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -15,12 +16,12 @@ import org.springframework.web.servlet.ModelAndView;
 public class HomeController {
 
     @Autowired
-    PostDao postDao;
+    PostService postService;
 
     @RequestMapping(value = "/", method = RequestMethod.GET)
     public ModelAndView showHomePage(@RequestParam(value = "error", required = false) String error) {
         ModelAndView model = new ModelAndView();
-        List<Post> posts = postDao.getAllPosts();
+        List<Post> posts = postService.getAll();
         Collections.sort(posts);
         Collections.reverse(posts);
         model.addObject("posts", posts);

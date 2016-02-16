@@ -6,7 +6,7 @@
 package maku.mvc.controllers;
 
 import javax.servlet.http.HttpServletRequest;
-import maku.mvc.dao.UserDao;
+import maku.mvc.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ControllerAdvice;
@@ -16,7 +16,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 public class UserInfoController {
     
     @Autowired
-    UserDao userDao;
+    UserService userService;
     
     @ModelAttribute
     public void userInfo(Model model, HttpServletRequest request) {
@@ -28,7 +28,7 @@ public class UserInfoController {
             model.addAttribute("loggedUserName", loggedUserName);
             model.addAttribute("isUserLogged", isUserLogged);
             try {
-            model.addAttribute("loggedUserId", userDao.getUserByName(loggedUserName).getId());
+            model.addAttribute("loggedUserId", userService.getByName(loggedUserName).getId());
             } catch (NullPointerException e) {
                 model.addAttribute("loggedUserId", 0);
             }

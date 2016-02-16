@@ -2,14 +2,15 @@ package maku.mvc.dao;
 
 import java.util.List;
 import javax.persistence.EntityManager;
+import javax.persistence.NoResultException;
 import javax.persistence.PersistenceContext;
 import javax.persistence.PersistenceContextType;
 import maku.mvc.entities.Post;
 import maku.mvc.entities.User;
-import org.springframework.stereotype.Service;
+import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
-@Service
+@Repository
 @Transactional
 public class PostDao {
 
@@ -17,11 +18,11 @@ public class PostDao {
     private final String POST_BY_TITLE = "SELECT p FROM Post p WHERE p.title = :title";
     private final String POSTS_BY_USER = "SELECT p FROM Post p WHERE p.user.id = :id";
     private final String DELETE_ALL_POSTS = "DELETE FROM Post";
-    
+
     @PersistenceContext(type = PersistenceContextType.EXTENDED)
     private EntityManager em;
 
-    public List<Post> getAllPosts() {
+    public List<Post> getAll() {
         return (List<Post>) em.createQuery(GET_ALL_POSTS).getResultList();
     }
 
@@ -38,7 +39,11 @@ public class PostDao {
     }
 
     public Post getPostByTitle(String title) {
-        return em.createQuery(POST_BY_TITLE, Post.class).getSingleResult();
+        try {
+            return em.createQuery(POST_BY_TITLE, Post.class).getSingleResult();
+        } catch (NoResultException ex) {
+            return null;
+        }
     }
 
     public List<Post> getPostsByUser(User user) {
@@ -52,8 +57,8 @@ public class PostDao {
     public void deletePost(Long id) {
         em.remove(getPostById(id));
     }
-    
-    public void deleteAllPosts() {
+
+    public void deleteAll() {
         em.createQuery(DELETE_ALL_POSTS).executeUpdate();
     }
 

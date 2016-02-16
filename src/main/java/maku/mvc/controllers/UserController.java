@@ -8,11 +8,12 @@ import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 import maku.mvc.config.ImageHandler;
 import maku.mvc.config.ImageUploadException;
-import maku.mvc.dao.UserDao;
 import maku.mvc.entities.Post;
-import maku.mvc.dao.PostDao;
 import maku.mvc.entities.Role;
 import maku.mvc.entities.User;
+import maku.mvc.services.PostService;
+import maku.mvc.services.RoleService;
+import maku.mvc.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -27,17 +28,20 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 @Controller
 public class UserController {
+    
+    @Autowired
+    UserService userService;
 
     @Autowired
-    UserDao userDao;
-
+    PostService postService;
+    
     @Autowired
-    PostDao postDao;
+    RoleService roleService;
 
     @RequestMapping(value = "/users", method = RequestMethod.GET)
     public ModelAndView showUsers() {
         ModelAndView model = new ModelAndView();
-        List<User> users = userDao.getAll();
+        List<User> users = userService.getAll();
         Collections.sort(users, (User u1, User u2) -> {
             return u1.getName().compareTo(u2.getName());
         });
@@ -60,11 +64,12 @@ public class UserController {
             HttpSession session,
             @RequestParam(value = "image", required = false) MultipartFile image) {
 
+        
         if (result.hasErrors()) {
             model.addAttribute("registerError", "Niepoprawnie wypełnione pola :");
             return "register";
         }
-        if (userDao.getUserByName(user.getName()) != null) {
+        if (userService.getByName(user.getName()) != null) {
             model.addAttribute("registerError", "Taki użytkownik już istnieje!");
             return "register";
         }
@@ -81,22 +86,22 @@ public class UserController {
             }
         }
 
-        Role role = userDao.getRoleByAuthority("ROLE_USER");
+        Role role = roleService.getByAuthority("ROLE_USER");
         user.setEnabled(true);
         user.setImageName("user_default.jpg");
-        userDao.persist(user);
+        userService.persist(user);
         user.getRoles().add(role);
-        userDao.merge(user);
+        userService.merge(user);
 
         String webResourcePath = session.getServletContext().getRealPath("/resources/upload/");
         if (!image.isEmpty()) {
             try {
                 ImageHandler.save("user" + user.getId() + ".jpg", webResourcePath, image);
                 user.setImageName("user" + user.getId() + ".jpg");
-                userDao.merge(user);
+                userService.merge(user);
                 attributes.addFlashAttribute("message", "Zarejestrowano nowego użytkownika! Możesz się teraz zalogować.");
             } catch (ImageUploadException e) {
-                userDao.delete(user);
+                userService.delete(user);
                 attributes.addFlashAttribute("message", e.getMessage());
             }
         }
@@ -109,8 +114,8 @@ public class UserController {
             HttpServletRequest request) {
 
         ModelAndView model = new ModelAndView();
-        User user = userDao.getUserById(userId);;
-        List<Post> posts = postDao.getPostsByUser(user);
+        User user = userService.getById(userId);;
+        List<Post> posts = postService.getPostsByUser(user);
         model.addObject("user", user);
         if (user.isEnabled()) {
             model.addObject("status", "Aktywne");
@@ -127,7 +132,7 @@ public class UserController {
         }
         model.addObject("isAdminUser", isAdmin);
         if (posts != null) {
-            model.addObject("numberOfPosts", postDao.getPostsByUser(user).size());
+            model.addObject("numberOfPosts", postService.getPostsByUser(user).size());
         } else {
             model.addObject("numberOfPosts", 0);
         }
@@ -138,10 +143,10 @@ public class UserController {
     @RequestMapping(value = "/user/{userId}/deleteAvatar", method = RequestMethod.GET)
     public ModelAndView deleteImage(@PathVariable(value = "userId") Long userId, HttpSession session, RedirectAttributes attributes) {
         ModelAndView model = new ModelAndView();
-        User user = userDao.getUserById(userId);
-        if (ImageHandler.delete(userDao.getUserById(userId).getImageName(), session.getServletContext().getRealPath("/resources/") + "/upload/")) {
+        User user = userService.getById(userId);
+        if (ImageHandler.delete(userService.getById(userId).getImageName(), session.getServletContext().getRealPath("/resources/") + "/upload/")) {
             user.setImageName("user_default.jpg");
-            userDao.merge(user);
+            userService.merge(user);
         }
         model.setViewName("redirect:/user/" + userId);
         return model;
@@ -171,7 +176,7 @@ public class UserController {
             model.addObject("error", ex.getMessage());
             return model;
         }
-        User user = userDao.getUserById(userId);
+        User user = userService.getById(userId);
         model.setViewName("redirect:/user/" + userId);
         if (!user.getImageName().equals("user_default.jpg")) {
             if(!ImageHandler.delete(user.getImageName(), uploadPath)) {
@@ -181,7 +186,7 @@ public class UserController {
         try {
             ImageHandler.save("user" + user.getId() + ".jpg", uploadPath, image);
             user.setImageName("user" + user.getId() + ".jpg");
-            userDao.merge(user);
+            userService.merge(user);
         } catch (ImageUploadException ex) {
             attributes.addFlashAttribute("error", ex.getMessage());
         }

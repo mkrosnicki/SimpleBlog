@@ -37,6 +37,9 @@ public class UserDaoTest {
 
     @Autowired
     private PostDao postDao;
+    
+    @Autowired
+    private RoleDao roleDao;
 
     public UserDaoTest() {
     }
@@ -56,9 +59,9 @@ public class UserDaoTest {
 //        admin.setAuthority("ROLE_ADMIN");
 //        userDao.persistRole(admin);
 
-        userDao.deleteAllUsers();
-        userDao.deleteAllRoles();
-        postDao.deleteAllPosts();
+        roleDao.deleteAll();
+        userDao.deleteAll();
+        postDao.deleteAll();
         
         User u1 = new User();
         u1.setName("User 1");
@@ -86,7 +89,7 @@ public class UserDaoTest {
 
         List<User> users = userDao.getAll();
 
-        Assert.assertEquals("Size of users", 3, users.size());
+        assertEquals("Size of users", 3, users.size());
 
     }
 
@@ -94,72 +97,53 @@ public class UserDaoTest {
      * Test of getUserByName method, of class UserDao.
      */
     @Test
-    public void testGetUserByName() {
-        fail("The test case is a prototype.");
+    public void testGetByName() {
+        String userName = "User 1";
+        User user = userDao.getByName(userName);
+        Assert.assertEquals("User name:", userName, user.getName());
     }
 
     /**
      * Test of persistUser method, of class UserDao.
      */
     @Test
-    public void testPersistUser() {
-        fail("The test case is a prototype.");
+    public void testPersist() {
+        User user4 = new User();
+        user4.setName("User 4");
+        userDao.persist(user4);
+        List<User> users = userDao.getAll();
+        Assert.assertEquals(4, users.size());
     }
 
     /**
      * Test of mergeUser method, of class UserDao.
      */
     @Test
-    public void testMergeUser() {
-        fail("The test case is a prototype.");
+    public void testMerge() {
+        User user = userDao.getByName("User 1");
+        String newName = "User 1 CHANGED";
+        user.setName(newName);
+        userDao.merge(user);
+        assertEquals("User 1 CHANGED", userDao.getByName(newName).getName());
+        assertEquals(null, userDao.getByName("User 1"));
     }
 
-    /**
-     * Test of getRoleById method, of class UserDao.
-     */
-    @Test
-    public void testGetRoleById() {
-        fail("The test case is a prototype.");
-    }
 
     /**
-     * Test of getRoleByAuthority method, of class UserDao.
+     * Test of delete method, of class UserDao.
      */
     @Test
-    public void testGetRoleByAuthority() {
-        fail("The test case is a prototype.");
+    public void testDelete() {
+//        User user = userDao.getUserById(1L);
+//        userDao.delete(user);
+//        List<User> users = userDao.getAll();
+//        Assert.assertEquals(2, users.size());
     }
-
-    /**
-     * Test of getRolesByAuthority method, of class UserDao.
-     */
+    
     @Test
-    public void testGetRolesByAuthority() {
-        fail("The test case is a prototype.");
-    }
-
-    /**
-     * Test of persistRole method, of class UserDao.
-     */
-    @Test
-    public void testPersistRole() {
-        fail("The test case is a prototype.");
-    }
-
-    /**
-     * Test of mergeRole method, of class UserDao.
-     */
-    @Test
-    public void testMergeRole() {
-        fail("The test case is a prototype.");
-    }
-
-    /**
-     * Test of deleteUser method, of class UserDao.
-     */
-    @Test
-    public void testDeleteUser() {
-        fail("The test case is a prototype.");
+    public void testDeleteAllUsers() {
+        userDao.deleteAll();
+        Assert.assertEquals(0, userDao.getAll().size());
     }
 
     /**
@@ -167,7 +151,10 @@ public class UserDaoTest {
      */
     @Test
     public void testGetUserById() {
-        fail("The test case is a prototype.");
+        List<User> users = userDao.getAll();
+        User user = users.get(1);
+        long expectedId = user.getId();
+        Assert.assertEquals(expectedId, (long) userDao.getUserById(expectedId).getId());
     }
 
 }

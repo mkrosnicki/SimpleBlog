@@ -2,7 +2,9 @@ package maku.mvc.entities;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
+import java.util.Objects;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -16,6 +18,8 @@ import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 import javax.persistence.Transient;
 import javax.validation.constraints.Size;
 import org.hibernate.annotations.Type;
@@ -48,6 +52,10 @@ public class User implements Serializable {
     @Transient
     private String repeatPassword;
 
+    @Temporal(TemporalType.DATE)
+    @Column(name = "date")
+    private Date dateOfRegister;
+
     @Type(type = "boolean")
     private boolean enabled;
 
@@ -64,7 +72,7 @@ public class User implements Serializable {
                 @JoinColumn(name = "authority", referencedColumnName = "authority")
             }
     )
-    private List<Role> roles = new ArrayList<>();
+    private List<Role> roles;
 
     @OneToMany(mappedBy = "user")
     private List<Post> posts;
@@ -153,6 +161,82 @@ public class User implements Serializable {
     public void setComments(List<Comment> comments) {
         this.comments = comments;
     }
+
+    public Date getDateOfRegister() {
+        return dateOfRegister;
+    }
+
+    public void setDateOfRegister(Date dateOfRegister) {
+        this.dateOfRegister = dateOfRegister;
+    }
+
+    @Override
+    public int hashCode() {
+        int hash = 5;
+        hash = 37 * hash + Objects.hashCode(this.DEFAULT_IMAGE);
+        hash = 37 * hash + Objects.hashCode(this.id);
+        hash = 37 * hash + Objects.hashCode(this.name);
+        hash = 37 * hash + Objects.hashCode(this.password);
+        hash = 37 * hash + Objects.hashCode(this.repeatPassword);
+        hash = 37 * hash + Objects.hashCode(this.dateOfRegister);
+        hash = 37 * hash + (this.enabled ? 1 : 0);
+        hash = 37 * hash + Objects.hashCode(this.comments);
+        hash = 37 * hash + Objects.hashCode(this.roles);
+        hash = 37 * hash + Objects.hashCode(this.posts);
+        hash = 37 * hash + Objects.hashCode(this.image);
+        hash = 37 * hash + Objects.hashCode(this.imageName);
+        return hash;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (obj == null) {
+            return false;
+        }
+        if (getClass() != obj.getClass()) {
+            return false;
+        }
+        final User other = (User) obj;
+        if (!Objects.equals(this.DEFAULT_IMAGE, other.DEFAULT_IMAGE)) {
+            return false;
+        }
+        if (!Objects.equals(this.id, other.id)) {
+            return false;
+        }
+        if (!Objects.equals(this.name, other.name)) {
+            return false;
+        }
+        if (!Objects.equals(this.password, other.password)) {
+            return false;
+        }
+        if (!Objects.equals(this.repeatPassword, other.repeatPassword)) {
+            return false;
+        }
+        if (!Objects.equals(this.dateOfRegister, other.dateOfRegister)) {
+            return false;
+        }
+        if (this.enabled != other.enabled) {
+            return false;
+        }
+        if (!Objects.equals(this.comments, other.comments)) {
+            return false;
+        }
+        if (!Objects.equals(this.roles, other.roles)) {
+            return false;
+        }
+        if (!Objects.equals(this.posts, other.posts)) {
+            return false;
+        }
+        if (!Objects.equals(this.image, other.image)) {
+            return false;
+        }
+        if (!Objects.equals(this.imageName, other.imageName)) {
+            return false;
+        }
+        return true;
+    }
+    
+    
 
     @Override
     public String toString() {

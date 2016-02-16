@@ -8,12 +8,12 @@ package maku.mvc.controllers;
 import java.util.Date;
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
-import maku.mvc.dao.CommentDao;
-import maku.mvc.dao.UserDao;
 import maku.mvc.entities.Comment;
 import maku.mvc.entities.Post;
 import maku.mvc.dao.PostDao;
 import maku.mvc.entities.User;
+import maku.mvc.services.CommentService;
+import maku.mvc.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
@@ -29,10 +29,10 @@ public class PostController {
     PostDao postDao;
 
     @Autowired
-    UserDao userDao;
+    UserService userService;
     
     @Autowired
-    CommentDao commentDao;
+    CommentService commentService;
 
     @RequestMapping(value = "/post/{postId}", method = RequestMethod.GET)
     public ModelAndView showPost(@PathVariable(value = "postId") Long postId) {
@@ -41,7 +41,7 @@ public class PostController {
         model.addObject("post", post);
         // duplikujace sie obiekty - zamienić na Set? 
         //List<Comment> comments = post.getComments(); 
-        model.addObject("comments", commentDao.getCommentsByPost(post));
+        model.addObject("comments", commentService.getCommentsByPost(post));
         model.addObject("comment", new Comment());
         model.setViewName("post");
         return model;
@@ -57,12 +57,12 @@ public class PostController {
         Date date = new Date();
         Post post = postDao.getPostById(postId);
         String publisherName = request.getUserPrincipal().getName();
-        User publisher = userDao.getUserByName(publisherName);
+        User publisher = userService.getByName(publisherName);
         comment.setPost(post);
         comment.setPublisher(publisher);
         comment.setDateOfPublish(date);
         //postDao.persistComment(comment);
-        commentDao.mergeComment(comment);
+        commentService.mergeComment(comment);
         model.setViewName("redirect:/post/" + postId);
         return model;
     }

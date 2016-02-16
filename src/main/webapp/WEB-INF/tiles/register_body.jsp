@@ -5,7 +5,7 @@
 
 <div class="well">
     <h4>Panel rejestracji nowego użytkownika</h4>
-    <form:form modelAttribute="user" cssClass="form-horizontal" enctype="multipart/form-data">
+    <form:form action="register?${_csrf.parameterName}=${_csrf.token}" modelAttribute="user" cssClass="form-horizontal" enctype="multipart/form-data">
         <form:input type="text" path="name" placeholder="Nazwa użytkownika" cssClass="form-control"/>
         <form:input type="password" path="password" placeholder="Hasło" cssClass="form-control"/>
         <form:input type="password" path="repeatPassword" placeholder="Powtórz hasło" cssClass="form-control"/>

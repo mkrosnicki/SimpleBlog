@@ -19,8 +19,6 @@ public class UserDao {
     private final String USER_BY_NAME = "SELECT u FROM User u WHERE u.name = :name";
     private final String DELETE_ALL_USERS = "DELETE FROM User";
 
-    private final String DELETE_ALL_ROLES = "DELETE FROM Role";
-
     @PersistenceContext(name = "persistenceUnit", type = PersistenceContextType.EXTENDED)
     private EntityManager em;
 
@@ -32,8 +30,12 @@ public class UserDao {
         return em.find(User.class, id);
     }
 
-    public User getUserByName(String name) {
-        return em.createQuery(USER_BY_NAME, User.class).setParameter("name", name).getSingleResult();
+    public User getByName(String name) {
+        try {
+            return em.createQuery(USER_BY_NAME, User.class).setParameter("name", name).getSingleResult();
+        } catch (NoResultException ex) {
+            return null;
+        }
     }
 
     public void persist(User user) {
@@ -48,32 +50,8 @@ public class UserDao {
         em.remove(user);
     }
 
-    public void deleteAllUsers() {
+    public void deleteAll() {
         em.createQuery(DELETE_ALL_USERS).executeUpdate();
-    }
-
-    public Role getRoleById(Long id) {
-        return em.find(Role.class, id);
-    }
-
-    public Role getRoleByAuthority(String authority) {
-        return (Role) em.createNamedQuery("Role.findByAuthority").setParameter("authority", authority).getSingleResult();
-    }
-
-    public List<Role> getRolesByAuthority(String authority) {
-        return (List<Role>) em.createNamedQuery("Role.findByAuthority").setParameter("authority", authority).getResultList();
-    }
-
-    public void persistRole(Role role) {
-        em.persist(role);
-    }
-
-    public void mergeRole(Role role) {
-        em.merge(role);
-    }
-
-    public void deleteAllRoles() {
-        em.createQuery(DELETE_ALL_ROLES).executeUpdate();
     }
 
 }

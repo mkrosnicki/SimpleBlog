@@ -6,9 +6,10 @@
 <div class="well">
     <ul class="nav nav-pills nav-stacked ">
         <h4>Dodaj nowego posta</h4>
-        <form:form modelAttribute="post" cssClass="form-horizontal" enctype="multipart/form-data">
+        <form:form modelAttribute="post" action="addpost?${_csrf.parameterName}=${_csrf.token}" cssClass="form-horizontal" enctype="multipart/form-data">
             <form:input type="text" path="title" cssClass="form-control" placeholder="Tytuł posta"/>
             <form:textarea  path="text" cssClass="form-control" cssStyle="resize: none; height: 300px" placeholder="Treść posta"/>
+<!--            <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />-->
             <div class="form-inline">
                 <form:input name="image" cssClass="" type="file" path="image"/>      
             </div>

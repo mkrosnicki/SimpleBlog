@@ -7,8 +7,8 @@ import javax.validation.Valid;
 import maku.mvc.config.ImageUploadException;
 import maku.mvc.config.ImageHandler;
 import maku.mvc.entities.Post;
-import maku.mvc.dao.PostDao;
 import maku.mvc.entities.User;
+import maku.mvc.services.PostService;
 import maku.mvc.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.annotation.Secured;
@@ -25,14 +25,14 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 @Controller
 @RequestMapping(value = "/admin")
-@Secured(value = "ROLE_ADMIN")
+//@Secured(value = "ROLE_ADMIN")
 public class AdminController {
 
     @Autowired
     UserService userService;
 
     @Autowired
-    PostDao postDao;
+    PostService postService;
 
     @RequestMapping(value = "", method = RequestMethod.GET)
     public ModelAndView showAdminPage() {
@@ -54,7 +54,7 @@ public class AdminController {
     @RequestMapping(value = "/posts", method = RequestMethod.GET)
     public ModelAndView showPosts() {
         ModelAndView model = new ModelAndView();
-        model.addObject("posts", postDao.getAllPosts());
+        model.addObject("posts", postService.getAll());
         model.setViewName("posts");
         return model;
     }
@@ -71,12 +71,12 @@ public class AdminController {
             Model model,
             @RequestParam(value = "image", required = false) MultipartFile image,
             HttpSession session) {
-        User loggedUser = userService.getUserByName(request.getUserPrincipal().getName());
+        User loggedUser = userService.getByName(request.getUserPrincipal().getName());
         post.setPoster(loggedUser);
         post.setDateOfPublish(new Date());
-        postDao.persistPost(post);
+        postService.persist(post);
         post.setImageName("post" + post.getId() + ".jpg");
-        postDao.mergePost(post);
+        postService.merge(post);
         String uploadPath = session.getServletContext().getRealPath("/resources/upload/");
         try {
             ImageHandler.validate(image);
@@ -94,13 +94,27 @@ public class AdminController {
             return "addpost";
         }
         
-        postDao.mergePost(post);
+        postService.merge(post);
         return "redirect:/";
     }
 
+//    @RequestMapping(value = "/addpost", method = RequestMethod.POST)
+//    public String addPostForm(@Valid Post post,
+//            HttpServletRequest request,
+//            Model model,
+//            HttpSession session) {
+//        User loggedUser = userService.getByName(request.getUserPrincipal().getName());
+//        post.setPoster(loggedUser);
+//        post.setDateOfPublish(new Date());
+//        postService.persist(post);
+//        post.setImageName("post" + post.getId() + ".jpg");
+//        postService.merge(post);
+//        return "redirect:/";
+//    }
+    
     @RequestMapping(value = "/delete/{id}")
     public String deletePost(@PathVariable("id") Long id, RedirectAttributes attributes) {
-        postDao.deletePost(id);
+        postService.delete(id);
         attributes.addFlashAttribute("message", "Pomyślnie usunięto post!");
         return "redirect:/admin/posts";
     }
@@ -108,8 +122,8 @@ public class AdminController {
     @RequestMapping(value = "/edit/{id}", method = RequestMethod.GET)
     public ModelAndView editPost(@PathVariable("id") Long id) {
         ModelAndView model = new ModelAndView();
-        System.out.println(postDao.getPostById(id) == null);
-        model.addObject("post", postDao.getPostById(id));
+        System.out.println(postService.getById(id) == null);
+        model.addObject("post", postService.getById(id));
         model.setViewName("editpost");
         return model;
     }
@@ -125,7 +139,7 @@ public class AdminController {
             return model;
         }
         post.setId(id);
-        postDao.mergePost(post);
+        postService.merge(post);
         attributes.addFlashAttribute("message", "Pomyślnie zedytowano post!");
         model.setViewName("redirect:/admin/posts");
         return model;

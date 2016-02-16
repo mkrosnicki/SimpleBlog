@@ -28,44 +28,24 @@ public class UserService {
         return userDao.getAll();
     }
 
-    public User getUserByName(String name) {
-        return userDao.getUserByName(name);
+    public User getByName(String name) {
+        return userDao.getByName(name);
     }
 
-    public void persistUser(User user) {
+    public void persist(User user) {
         userDao.persist(user);
     }
 
-    public void mergeUser(User user) {
+    public void merge(User user) {
         userDao.merge(user);
     }
 
-    public void deleteUser(User user) {
+    public void delete(User user) {
         userDao.delete(user);
     }
 
-    public User getUserById(Long id) {
+    public User getById(Long id) {
         return userDao.getUserById(id);
-    }
-
-    public Role getRoleById(Long id) {
-        return userDao.getRoleById(id);
-    }
-
-    public Role getRoleByAuthority(String authority) {
-        return userDao.getRoleByAuthority(authority);
-    }
-
-    public List<Role> getRolesByAuthority(String authority) {
-        return userDao.getRolesByAuthority(authority);
-    }
-
-    public void persistRole(Role role) {
-        userDao.persistRole(role);
-    }
-
-    public void mergeRole(Role role) {
-        userDao.mergeRole(role);
     }
 
 }

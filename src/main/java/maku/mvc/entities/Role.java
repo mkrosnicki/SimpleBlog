@@ -10,17 +10,19 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToMany;
-import javax.persistence.NamedQueries;
-import javax.persistence.NamedQuery;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
 @Entity
 @Table(name = "ROLE")
-@NamedQueries({
-    @NamedQuery(name = "Role.findByAuthority", query = "SELECT r FROM Role r WHERE r.authority = :authority")
-})
 public class Role implements Serializable {
 
+    
+    @Transient
+    private static final String ADMIN = "ADMIN_ROLE";
+    @Transient
+    private static final String USER = "USER_ROLE"; 
+    
     @Id
     @Column(name = "role_id")
     @GeneratedValue(strategy = GenerationType.AUTO)
