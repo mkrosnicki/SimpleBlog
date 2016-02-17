@@ -19,9 +19,9 @@ public class Role implements Serializable {
 
     
     @Transient
-    private static final String ADMIN = "ADMIN_ROLE";
+    public static final String ADMIN = "ADMIN_ROLE";
     @Transient
-    private static final String USER = "USER_ROLE"; 
+    public static final String USER = "USER_ROLE"; 
     
     @Id
     @Column(name = "role_id")

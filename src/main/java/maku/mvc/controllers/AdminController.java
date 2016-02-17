@@ -4,8 +4,9 @@ import java.util.Date;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
-import maku.mvc.config.ImageUploadException;
+import maku.mvc.config.ImageOperationException;
 import maku.mvc.config.ImageHandler;
+import maku.mvc.constants.Constants;
 import maku.mvc.entities.Post;
 import maku.mvc.entities.User;
 import maku.mvc.services.PostService;
@@ -71,16 +72,17 @@ public class AdminController {
             Model model,
             @RequestParam(value = "image", required = false) MultipartFile image,
             HttpSession session) {
+        
         User loggedUser = userService.getByName(request.getUserPrincipal().getName());
         post.setPoster(loggedUser);
         post.setDateOfPublish(new Date());
         postService.persist(post);
         post.setImageName("post" + post.getId() + ".jpg");
         postService.merge(post);
-        String uploadPath = session.getServletContext().getRealPath("/resources/upload/");
+        String uploadPath = session.getServletContext().getRealPath(Constants.UPLOAD_PATH);
         try {
             ImageHandler.validate(image);
-        } catch (ImageUploadException e) {
+        } catch (ImageOperationException e) {
             model.addAttribute("message", e.getMessage());
             return "addpost";
         }
@@ -89,7 +91,7 @@ public class AdminController {
         
         try {
             ImageHandler.save(post.getImageName(), uploadPath, image);
-        } catch (ImageUploadException e) {
+        } catch (ImageOperationException e) {
             model.addAttribute("message", e.getMessage());
             return "addpost";
         }

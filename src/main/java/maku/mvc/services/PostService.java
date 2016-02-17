@@ -30,15 +30,13 @@ public class PostService {
         return postDao.getAll();
     }
 
-    public List<Post> getPostsSortedByDate(boolean reversed) {
+    public List<Post> getSortedByDate() {
         List<Post> posts = getAll();
         Collections.sort(posts,
                 (Post p1, Post p2) -> {
                     return p1.getDateOfPublish().compareTo(p2.getDateOfPublish());
                 }
         );
-        if (reversed)
-            Collections.reverse(posts);
         return posts;
     }
 

@@ -17,19 +17,19 @@ import org.springframework.web.multipart.MultipartFile;
 
 public class ImageHandler {
 
-    public static void validate(Object o) throws ImageUploadException {
+    public static void validate(Object o) throws ImageOperationException {
         MultipartFile file = (MultipartFile) o;
         if (!file.getContentType().equals("image/jpeg")) {
-            throw new ImageUploadException("Akceptowany jedynie format JPG!");
+            throw new ImageOperationException("Akceptowany jedynie format JPG!");
         }
     }
 
-    public static void save(String fileName, String path, MultipartFile image) throws ImageUploadException {
+    public static void save(String fileName, String path, MultipartFile image) throws ImageOperationException {
         try {
             File file = new File(path + "//" + fileName);
             FileUtils.writeByteArrayToFile(file, image.getBytes());
         } catch (IOException ex) {
-            throw new ImageUploadException("Nie udało się zapisać pliku!");
+            throw new ImageOperationException("Nie udało się zapisać pliku!");
         }
     }
 
@@ -47,7 +47,7 @@ public class ImageHandler {
         try {
             save(fileName, path, newImage);
             return true;
-        } catch (ImageUploadException ex) {
+        } catch (ImageOperationException ex) {
             ex.printStackTrace();
             return false;
         }

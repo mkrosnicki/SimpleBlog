@@ -5,6 +5,7 @@
  */
 package maku.mvc.services;
 
+import java.util.Collections;
 import java.util.List;
 import maku.mvc.dao.UserDao;
 import maku.mvc.entities.Role;
@@ -26,6 +27,16 @@ public class UserService {
 
     public List<User> getAll() {
         return userDao.getAll();
+    }
+    
+    public List<User> getSortedByName() {
+        List<User> users = getAll();
+        Collections.sort(users, 
+                (User u1, User u2) -> { 
+                    return u1.getName().compareTo( u2.getName()); 
+                }
+        );
+        return users;
     }
 
     public User getByName(String name) {

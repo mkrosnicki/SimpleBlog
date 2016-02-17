@@ -35,7 +35,7 @@ import org.springframework.web.multipart.MultipartFile;
 public class User implements Serializable {
 
     @Transient
-    private final String DEFAULT_IMAGE = "default_user.jpg";
+    public static final String DEFAULT_IMAGE_NAME = "default_user.jpg";
 
     @Id
     @Column(name = "user_id")
@@ -57,7 +57,7 @@ public class User implements Serializable {
     private Date dateOfRegister;
 
     @Type(type = "boolean")
-    private boolean enabled;
+    private boolean enabled = true;
 
     @OneToMany(mappedBy = "user")
     private List<Comment> comments;
@@ -80,7 +80,7 @@ public class User implements Serializable {
     @Transient
     private MultipartFile image;
 
-    private String imageName = DEFAULT_IMAGE;
+    private String imageName = DEFAULT_IMAGE_NAME;
 
     public Long getId() {
         return id;
@@ -173,7 +173,6 @@ public class User implements Serializable {
     @Override
     public int hashCode() {
         int hash = 5;
-        hash = 37 * hash + Objects.hashCode(this.DEFAULT_IMAGE);
         hash = 37 * hash + Objects.hashCode(this.id);
         hash = 37 * hash + Objects.hashCode(this.name);
         hash = 37 * hash + Objects.hashCode(this.password);
@@ -197,9 +196,6 @@ public class User implements Serializable {
             return false;
         }
         final User other = (User) obj;
-        if (!Objects.equals(this.DEFAULT_IMAGE, other.DEFAULT_IMAGE)) {
-            return false;
-        }
         if (!Objects.equals(this.id, other.id)) {
             return false;
         }

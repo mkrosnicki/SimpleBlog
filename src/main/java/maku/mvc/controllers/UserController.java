@@ -1,16 +1,16 @@
 package maku.mvc.controllers;
 
-import java.util.Collections;
+import java.util.Date;
 import java.util.List;
-import java.util.function.Predicate;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
-import maku.mvc.config.ImageHandler;
-import maku.mvc.config.ImageUploadException;
+import maku.mvc.config.ImageOperationException;
+import maku.mvc.constants.Constants;
 import maku.mvc.entities.Post;
 import maku.mvc.entities.Role;
 import maku.mvc.entities.User;
+import maku.mvc.services.ImageService;
 import maku.mvc.services.PostService;
 import maku.mvc.services.RoleService;
 import maku.mvc.services.UserService;
@@ -28,23 +28,20 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 @Controller
 public class UserController {
-    
+
     @Autowired
     UserService userService;
 
     @Autowired
     PostService postService;
-    
+
     @Autowired
     RoleService roleService;
 
     @RequestMapping(value = "/users", method = RequestMethod.GET)
     public ModelAndView showUsers() {
         ModelAndView model = new ModelAndView();
-        List<User> users = userService.getAll();
-        Collections.sort(users, (User u1, User u2) -> {
-            return u1.getName().compareTo(u2.getName());
-        });
+        List<User> users = userService.getSortedByName();
         model.addObject("users", users);
         model.setViewName("main_users");
         return model;
@@ -64,47 +61,24 @@ public class UserController {
             HttpSession session,
             @RequestParam(value = "image", required = false) MultipartFile image) {
 
-        
         if (result.hasErrors()) {
             model.addAttribute("registerError", "Niepoprawnie wypełnione pola :");
             return "register";
         }
         if (userService.getByName(user.getName()) != null) {
-            model.addAttribute("registerError", "Taki użytkownik już istnieje!");
+            model.addAttribute("registerError", Constants.USER_EXISTS_ERROR);
             return "register";
         }
         if (!user.getPassword().equals(user.getRepeatPassword())) {
-            model.addAttribute("registerError", "Wpisane hasła nie są takie same!");
+            model.addAttribute("registerError", Constants.PASSWORDS_DONT_MATCH_ERROR);
             return "register";
         }
-        if (!image.isEmpty()) {
-            try {
-                ImageHandler.validate(image);
-            } catch (ImageUploadException e) {
-                model.addAttribute("registerError", e.getMessage());
-                return "register";
-            }
-        }
-
-        Role role = roleService.getByAuthority("ROLE_USER");
-        user.setEnabled(true);
-        user.setImageName("user_default.jpg");
+        Role role = roleService.getByAuthority(Role.USER);
+        user.setDateOfRegister(new Date());
         userService.persist(user);
         user.getRoles().add(role);
         userService.merge(user);
-
-        String webResourcePath = session.getServletContext().getRealPath("/resources/upload/");
-        if (!image.isEmpty()) {
-            try {
-                ImageHandler.save("user" + user.getId() + ".jpg", webResourcePath, image);
-                user.setImageName("user" + user.getId() + ".jpg");
-                userService.merge(user);
-                attributes.addFlashAttribute("message", "Zarejestrowano nowego użytkownika! Możesz się teraz zalogować.");
-            } catch (ImageUploadException e) {
-                userService.delete(user);
-                attributes.addFlashAttribute("message", e.getMessage());
-            }
-        }
+        attributes.addFlashAttribute("message", "Zarejestrowano nowego użytkownika! Możesz się teraz zalogować.");
 
         return "redirect:/";
     }
@@ -116,15 +90,14 @@ public class UserController {
         ModelAndView model = new ModelAndView();
         User user = userService.getById(userId);;
         List<Post> posts = postService.getPostsByUser(user);
+        boolean isAdmin = user.getRoles().stream().anyMatch((Role role) -> (role.getAuthority().equals(Role.USER)));
+
         model.addObject("user", user);
         if (user.isEnabled()) {
             model.addObject("status", "Aktywne");
         } else {
             model.addObject("status", "Nieaktywne");
         }
-        Predicate<Role> isAdminTest = (Role role) -> (role.getAuthority().equals("ROLE_ADMIN"));
-        List<Role> roles = user.getRoles();
-        boolean isAdmin = user.getRoles().stream().anyMatch(isAdminTest);
         if (isAdmin) {
             model.addObject("userRole", "Admin");
         } else {
@@ -144,9 +117,13 @@ public class UserController {
     public ModelAndView deleteImage(@PathVariable(value = "userId") Long userId, HttpSession session, RedirectAttributes attributes) {
         ModelAndView model = new ModelAndView();
         User user = userService.getById(userId);
-        if (ImageHandler.delete(userService.getById(userId).getImageName(), session.getServletContext().getRealPath("/resources/") + "/upload/")) {
-            user.setImageName("user_default.jpg");
-            userService.merge(user);
+        if (!user.getImageName().equals(User.DEFAULT_IMAGE_NAME)) {
+            try {
+                ImageService.deleteAvatar(user, session.getServletContext().getRealPath(Constants.UPLOAD_PATH));
+                attributes.addFlashAttribute("success", Constants.DELETE_AVATAR_SUCCESS);
+            } catch (ImageOperationException e) {
+                attributes.addFlashAttribute("error", Constants.DELETE_AVATAR_ERROR);
+            }
         }
         model.setViewName("redirect:/user/" + userId);
         return model;
@@ -164,33 +141,16 @@ public class UserController {
             RedirectAttributes attributes) {
 
         ModelAndView model = new ModelAndView();
-        String uploadPath = session.getServletContext().getRealPath("/resources/upload/");
+        String uploadPath = session.getServletContext().getRealPath(Constants.UPLOAD_PATH);
         model.setViewName("changeAvatar");
-        if (image.isEmpty()) {
-            model.addObject("error", "Nie wybrano żadnego obrazka!");
-            return model;
-        }
         try {
-            ImageHandler.validate(image);
-        } catch (ImageUploadException ex) {
-            model.addObject("error", ex.getMessage());
-            return model;
+            ImageService.updateAvatar(image, userService.getById(userId), uploadPath);
+            attributes.addFlashAttribute("success", "Pomyślnie zmieniono awatar!");
+            model.setViewName("redirect:/user/" + userId);
+        } catch (ImageOperationException e) {
+            model.addObject("error", e.getMessage());
+            model.setViewName("changeAvatar");
         }
-        User user = userService.getById(userId);
-        model.setViewName("redirect:/user/" + userId);
-        if (!user.getImageName().equals("user_default.jpg")) {
-            if(!ImageHandler.delete(user.getImageName(), uploadPath)) {
-                attributes.addFlashAttribute("error", "Nie udało się usunąć starego awatara!");
-            }
-        }
-        try {
-            ImageHandler.save("user" + user.getId() + ".jpg", uploadPath, image);
-            user.setImageName("user" + user.getId() + ".jpg");
-            userService.merge(user);
-        } catch (ImageUploadException ex) {
-            attributes.addFlashAttribute("error", ex.getMessage());
-        }
-        attributes.addFlashAttribute("success", "Pomyślnie zmieniono awatar!");
         return model;
     }
 

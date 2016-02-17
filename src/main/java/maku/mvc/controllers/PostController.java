@@ -38,9 +38,7 @@ public class PostController {
     public ModelAndView showPost(@PathVariable(value = "postId") Long postId) {
         ModelAndView model = new ModelAndView();
         Post post = postDao.getPostById(postId);
-        model.addObject("post", post);
-        // duplikujace sie obiekty - zamienić na Set? 
-        //List<Comment> comments = post.getComments(); 
+        model.addObject("post", post); 
         model.addObject("comments", commentService.getCommentsByPost(post));
         model.addObject("comment", new Comment());
         model.setViewName("post");
@@ -61,7 +59,6 @@ public class PostController {
         comment.setPost(post);
         comment.setPublisher(publisher);
         comment.setDateOfPublish(date);
-        //postDao.persistComment(comment);
         commentService.mergeComment(comment);
         model.setViewName("redirect:/post/" + postId);
         return model;

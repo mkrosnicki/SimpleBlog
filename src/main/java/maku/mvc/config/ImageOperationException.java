@@ -9,9 +9,9 @@ package maku.mvc.config;
  *
  * @author Maku
  */
-public class ImageUploadException extends Exception {
+public class ImageOperationException extends Exception {
 
-    public ImageUploadException(String message) {
+    public ImageOperationException(String message) {
         super(message);
     }
 

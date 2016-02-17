@@ -21,8 +21,7 @@ public class HomeController {
     @RequestMapping(value = "/", method = RequestMethod.GET)
     public ModelAndView showHomePage(@RequestParam(value = "error", required = false) String error) {
         ModelAndView model = new ModelAndView();
-        List<Post> posts = postService.getAll();
-        Collections.sort(posts);
+        List<Post> posts = postService.getSortedByDate();
         Collections.reverse(posts);
         model.addObject("posts", posts);
         if (error != null) {
@@ -36,7 +35,6 @@ public class HomeController {
     public String showErrorPage() {
         return "403";
     }
-
 
     @RequestMapping(value = "/contact", method = RequestMethod.GET)
     public String showContact() {
