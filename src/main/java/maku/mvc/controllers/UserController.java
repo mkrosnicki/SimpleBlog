@@ -10,6 +10,7 @@ import maku.mvc.constants.Constants;
 import maku.mvc.entities.Post;
 import maku.mvc.entities.Role;
 import maku.mvc.entities.User;
+import maku.mvc.services.CommentService;
 import maku.mvc.services.ImageService;
 import maku.mvc.services.PostService;
 import maku.mvc.services.RoleService;
@@ -38,6 +39,9 @@ public class UserController {
     @Autowired
     RoleService roleService;
 
+    @Autowired
+    CommentService commentService;
+
     @RequestMapping(value = "/users", method = RequestMethod.GET)
     public ModelAndView showUsers() {
         ModelAndView model = new ModelAndView();
@@ -62,7 +66,7 @@ public class UserController {
             @RequestParam(value = "image", required = false) MultipartFile image) {
 
         if (result.hasErrors()) {
-            model.addAttribute("registerError", "Niepoprawnie wypeÅ‚nione pola :");
+            model.addAttribute("registerError", "Niepoprawnie wype³nione pola :");
             return "register";
         }
         if (userService.getByName(user.getName()) != null) {
@@ -76,9 +80,10 @@ public class UserController {
         Role role = roleService.getByAuthority(Role.USER);
         user.setDateOfRegister(new Date());
         userService.persist(user);
+
         user.getRoles().add(role);
         userService.merge(user);
-        attributes.addFlashAttribute("message", "Zarejestrowano nowego uÅ¼ytkownika! MoÅ¼esz siÄ™ teraz zalogowaÄ‡.");
+        attributes.addFlashAttribute("message", "Zarejestrowano nowego u¿ytkownika! Mo¿esz siê teraz zalogowaæ.");
 
         return "redirect:/";
     }
@@ -88,7 +93,7 @@ public class UserController {
             HttpServletRequest request) {
 
         ModelAndView model = new ModelAndView();
-        User user = userService.getById(userId);;
+        User user = userService.getById(userId);
         List<Post> posts = postService.getPostsByUser(user);
         boolean isAdmin = user.getRoles().stream().anyMatch((Role role) -> (role.getAuthority().equals(Role.USER)));
 
@@ -101,7 +106,7 @@ public class UserController {
         if (isAdmin) {
             model.addObject("userRole", "Admin");
         } else {
-            model.addObject("userRole", "UÅ¼ytkownik");
+            model.addObject("userRole", "U¿ytkownik");
         }
         model.addObject("isAdminUser", isAdmin);
         if (posts != null) {
@@ -145,7 +150,7 @@ public class UserController {
         model.setViewName("changeAvatar");
         try {
             ImageService.updateAvatar(image, userService.getById(userId), uploadPath);
-            attributes.addFlashAttribute("success", "PomyÅ›lnie zmieniono awatar!");
+            attributes.addFlashAttribute("success", "Pomyœlnie zmieniono awatar!");
             model.setViewName("redirect:/user/" + userId);
         } catch (ImageOperationException e) {
             model.addObject("error", e.getMessage());
