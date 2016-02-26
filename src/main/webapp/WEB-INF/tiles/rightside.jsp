@@ -47,16 +47,17 @@
 
 <!-- Blog Search Well -->
 <div class="well">
-    <h4>Wyszukiwarka</h4>
-    <div class="input-group">
-        <input type="text" class="form-control">
-        <span class="input-group-btn">
-            <button class="btn btn-default" type="button">
-                <span class="glyphicon glyphicon-search"></span>
-            </button>
-        </span>
-    </div>
-    <!-- /.input-group -->
+    <h4>Wyszukiwarka postów</h4>
+    <form class="form" action="<c:url value="/search"/>">
+        <div class="input-group">
+            <input type="text" name="q" class="form-control">
+            <span class="input-group-btn">
+                <button class="btn btn-default" type="submit">
+                    <span class="glyphicon glyphicon-search"></span>
+                </button>
+            </span>
+        </div>
+    </form>
 </div>
 
 <!-- Blog Categories Well -->

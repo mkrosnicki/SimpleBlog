@@ -72,4 +72,8 @@ public class PostService {
         postDao.deleteAll();
     }
 
+    public List<Post> findPostsWhichContains(String phrase) {
+        return postDao.findPostsWhichContains(phrase);
+    }
+    
 }

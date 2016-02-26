@@ -13,9 +13,14 @@
         <put-attribute name="rightside" value="/WEB-INF/tiles/rightside.jsp" />
     </definition>
   
-    <definition name="index" extends="common">
+    <definition name="index2" extends="common">
         <put-attribute name="header" value="/WEB-INF/tiles/index_header.jsp" />
         <put-attribute name="body" value="/WEB-INF/tiles/index_body.jsp" />
+    </definition>
+    
+    <definition name="search" extends="common">
+        <put-attribute name="title" value="SimpleBlog by Maku :: Zaloguj" />
+        <put-attribute name="body" value="/WEB-INF/tiles/search_body.jsp" />
     </definition>
     
     <definition name="login" extends="common">
@@ -84,5 +89,17 @@
         <put-attribute name="title" value="SimpleBlog by Maku :: Kontakt" />
         <put-attribute name="body" value="/WEB-INF/tiles/contact.jsp" />
     </definition>
+    
+    
+    <definition name="index" template="/WEB-INF/tiles/template.jsp">
+        <put-attribute name="title" value="FootballBlog :: Strona główna" />
+        <put-attribute name="header" value="/WEB-INF/tiles/header.jsp" />
+        <put-attribute name="menu" value="/WEB-INF/tiles/menu.jsp" />
+        <put-attribute name="content" value="/WEB-INF/tiles/main.jsp" />
+        <put-attribute name="lower_menu" value="/WEB-INF/tiles/lower_menu.jsp" />
+        <put-attribute name="footer" value="/WEB-INF/tiles/footer.jsp" />
+    </definition>
+    
+    
     
 </tiles-definitions>

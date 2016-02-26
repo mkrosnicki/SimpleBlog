@@ -1,6 +1,11 @@
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 
+<c:if test="${noResults}">
+    <div class="alert alert-danger">
+        NIE ZNALEZIONO ŻADNYCH POSTÓW!
+    </div>
+</c:if>
 
 <c:forEach var="post" items="${posts}">
     <h1>${post.title}</h1>

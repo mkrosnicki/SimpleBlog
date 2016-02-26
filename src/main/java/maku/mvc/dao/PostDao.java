@@ -62,4 +62,8 @@ public class PostDao {
         em.createQuery(DELETE_ALL_POSTS).executeUpdate();
     }
 
+    public List<Post> findPostsWhichContains(String phrase) {
+        return em.createQuery("SELECT p FROM Post p WHERE p.title LIKE :phrase OR p.text LIKE :phrase").setParameter("phrase","%" + phrase + "%").getResultList();
+    };
+
 }

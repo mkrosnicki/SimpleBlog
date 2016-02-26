@@ -2,26 +2,106 @@
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 
 
-<c:forEach var="post" items="${posts}">
-    <h1>${post.title}</h1>
-    <p class="lead">
-    <h5>Dodany przez <a href="<c:url value="/user/${post.poster.id}"/>">${post.poster.name}</a></h5>
-    </p>
-<p><span class="glyphicon glyphicon-time"></span> ${post.dateOfPublish}</p>
-<hr>
-<img class="img-responsive" src="<c:url value="/resources/upload/${post.imageName}"/>" style="width: 100%; height: 200px">
-<hr>
-<a class="btn btn-primary" href="${appContextPath}/post/${post.id}">Zobacz posta  <span class="glyphicon glyphicon-chevron-right"></span></a>
+<br />
+<br />
 
-<hr>
-</c:forEach>
+<!-- CONTENT -->
+<div class="col-md-1"></div>
 
-<!-- Pager -->
-<ul class="pager">
-    <li class="previous">
-        <a href="#">&larr; Older</a>
-    </li>
-    <li class="next">
-        <a href="#">Newer &rarr;</a>
-    </li>
-</ul>
+<div class="col-md-10">
+
+    <!-- POST -->
+
+    <div class="row">
+        <div class="well" id="posts">
+            <div class="col-md-4">
+                <p class="text-center">
+                    <img src="post1.jpg" class="img img-responsive" style="margin: 0 auto; height: 125px">
+                </p>
+            </div>
+            <div class="col-md-8">
+                <div class="row">
+                    <h4>Ronaldo odejdzie z Realu?</h4>
+                </div>
+                <hr />
+                <div class="row">
+                    <span class="label label-danger">Transfery</span>
+                    <span class="label label-danger">Zapowiedzi</span>
+                    <span class="label label-danger">Inne</span>
+                    <button class="btn btn-success pull-right">Przeczytaj więcej</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="well" id="posts">
+            <div class="col-md-4">
+                <p class="text-center">
+                    <img src="post1.jpg" class="img img-responsive" style="margin: 0 auto; height: 125px">
+                </p>
+            </div>
+            <div class="col-md-8">
+                <div class="row">
+                    <h4>Ronaldo odejdzie z Realu?</h4>
+                </div>
+                <hr />
+                <div class="row">
+                    <span class="label label-danger">Transfery</span>
+                    <span class="label label-danger">Zapowiedzi</span>
+                    <span class="label label-danger">Inne</span>
+                    <button class="btn btn-success pull-right">Przeczytaj więcej</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="well" id="posts">
+            <div class="col-md-4">
+                <p class="text-center">
+                    <img src="post1.jpg" class="img img-responsive" style="margin: 0 auto; height: 125px">
+                </p>
+            </div>
+            <div class="col-md-8">
+                <div class="row">
+                    <h4>Ronaldo odejdzie z Realu?</h4>
+                </div>
+                <hr />
+                <div class="row">
+                    <span class="label label-danger">Transfery</span>
+                    <span class="label label-danger">Zapowiedzi</span>
+                    <span class="label label-danger">Inne</span>
+                    <button class="btn btn-success pull-right">Przeczytaj więcej</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="well" id="posts">
+            <div class="col-md-4">
+                <p class="text-center">
+                    <img src="post1.jpg" class="img img-responsive" style="margin: 0 auto; height: 125px">
+                </p>
+            </div>
+            <div class="col-md-8">
+                <div class="row">
+                    <h4>Ronaldo odejdzie z Realu?</h4>
+                </div>
+                <hr />
+                <div class="row">
+                    <span class="label label-danger">Transfery</span>
+                    <span class="label label-danger">Zapowiedzi</span>
+                    <span class="label label-danger">Inne</span>
+                    <button class="btn btn-success pull-right">Przeczytaj więcej</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <br />
+</div>
+
+<div class="col-md-1"></div>

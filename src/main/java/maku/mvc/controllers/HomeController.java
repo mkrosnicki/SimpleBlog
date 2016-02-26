@@ -7,6 +7,7 @@ import maku.mvc.dao.PostDao;
 import maku.mvc.services.PostService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -27,7 +28,18 @@ public class HomeController {
         if (error != null) {
             model.addObject("error", "Niepoprawne dane uzytkownika!");
         }
-        model.setViewName("common");
+        model.setViewName("index");
+        return model;
+    }
+
+    @RequestMapping(value = "/search", method = RequestMethod.GET)
+    public ModelAndView showSearchResults(@RequestParam(value = "q") String phrase) {
+        ModelAndView model = new ModelAndView();
+        List<Post> posts = postService.findPostsWhichContains(phrase);
+        if (posts.size() == 0) 
+            model.addObject("noResults", true);
+        model.addObject("posts", posts);
+        model.setViewName("search");
         return model;
     }
 
