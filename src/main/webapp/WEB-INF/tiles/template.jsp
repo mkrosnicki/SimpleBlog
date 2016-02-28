@@ -13,13 +13,16 @@
 
         <title><tiles:getAsString name="title" /></title>
 
+        <script src="<c:url value="/resources/js/jquery.js" />" ></script>
+        <script src="<c:url value="/resources/js/bootstrap.min.js"/>"></script>
+
         <link href="<c:url value="/resources/css/bootstrap.min.css" />" rel="stylesheet">
 
         <link href="<c:url value="/resources/css/fileinput.min.css"/>" media="all" rel="stylesheet" type="text/css" />
         <script src="<c:url value="/resources/js/plugins/canvas-to-blob.min.js"/>" type="text/javascript"></script>
-        <script src="<c:url value="js/fileinput.min.js" />"></script>
-        <script src="<c:url value="js/bootstrap.min.js" />"></script>
-        <script src="<c:url value="js/fileinput_locale_pl.js" />"></script>
+        <script src="<c:url value="/resources/js/fileinput.min.js" />"></script>
+        <script src="<c:url value="/resources/js/bootstrap.min.js" />"></script>
+        <script src="<c:url value="/resources/js/fileinput_locale_pl.js" />"></script>
 
         <link href="<c:url value="/resources/css/blog.css" />" rel="stylesheet">
 
@@ -68,10 +71,6 @@
         <tiles:insertAttribute name="footer" />
 
 
-        <script src="<c:url value="/resources/js/jquery.js" />" ></script>
-        <script src="<c:url value="/resources/js/bootstrap.min.js"/>"></script>
-        <script src="<c:url value="/resources/js/scripts.js"/>"></script>
-
         <script>
             function formSubmit() {
                 document.getElementById("logoutForm").submit();
@@ -79,7 +78,7 @@
         </script>
         <script>
             $("#addCommentButton").click(function () {
-                $("#addCommentForm").toggle(50);
+                $("#addcommentform").toggle(50);
             }
             );
         </script>

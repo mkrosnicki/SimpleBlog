@@ -18,37 +18,37 @@
         <put-attribute name="body" value="/WEB-INF/tiles/index_body.jsp" />
     </definition>
     
-    <definition name="search" extends="common">
+    <definition name="search2" extends="common">
         <put-attribute name="title" value="SimpleBlog by Maku :: Zaloguj" />
         <put-attribute name="body" value="/WEB-INF/tiles/search_body.jsp" />
     </definition>
     
-    <definition name="login" extends="common">
+    <definition name="login2" extends="common">
         <put-attribute name="title" value="SimpleBlog by Maku :: Zaloguj" />
         <put-attribute name="body" value="/WEB-INF/tiles/login_body.jsp" />
     </definition>
     
-    <definition name="admin" extends="common">
+    <definition name="admin2" extends="common">
         <put-attribute name="title" value="SimpleBlog by Maku :: AdminPage" />
         <put-attribute name="body" value="/WEB-INF/tiles/admin_body.jsp" />
     </definition>
     
-    <definition name="users" extends="common">
+    <definition name="users2" extends="common">
         <put-attribute name="title" value="SimpleBlog by Maku :: AdminPage :: Lista użytkowników" />
         <put-attribute name="body" value="/WEB-INF/tiles/admin_users_body.jsp" />
     </definition>
     
-    <definition name="posts" extends="common">
+    <definition name="posts2" extends="common">
         <put-attribute name="title" value="SimpleBlog by Maku :: Admin Page :: Lista postów" />
         <put-attribute name="body" value="/WEB-INF/tiles/admin_posts_body.jsp" />
     </definition>
     
-    <definition name="register" extends="common">
+    <definition name="register2" extends="common">
         <put-attribute name="title" value="SimpleBlog by Maku :: Rejestracja użytkownika" />
         <put-attribute name="body" value="/WEB-INF/tiles/register_body.jsp" />
     </definition>
     
-    <definition name="addpost" extends="common">
+    <definition name="addpost2" extends="common">
         <put-attribute name="title" value="SimpleBlog by Maku :: Nowy post" />
         <put-attribute name="body" value="/WEB-INF/tiles/addpost_body.jsp" />
     </definition>
@@ -58,7 +58,7 @@
         <put-attribute name="body" value="/WEB-INF/tiles/editpost_body.jsp" />
     </definition>
     
-    <definition name="user" extends="common">
+    <definition name="user2" extends="common">
         <put-attribute name="title" value="SimpleBlog by Maku :: Profil użytkownika" />
         <put-attribute name="header" value="/WEB-INF/tiles/user_header.jsp" />
         <put-attribute name="body" value="/WEB-INF/tiles/user_body.jsp" />
@@ -69,26 +69,30 @@
         <put-attribute name="body" value="/WEB-INF/tiles/changeAvatar_body.jsp" />
     </definition>
     
-    <definition name="main_users" extends="common">
+    <definition name="main_users2" extends="common">
         <put-attribute name="title" value="SimpleBlog by Maku :: Lista użytkowników" />
         <put-attribute name="body" value="/WEB-INF/tiles/mainUsers_body.jsp" />
     </definition>
 
-    <definition name="post" extends="common">
+    <definition name="post2" extends="common">
         <put-attribute name="title" value="SimpleBlog by Maku :: Post" />
         <put-attribute name="header" value="/WEB-INF/tiles/post_header.jsp" />
         <put-attribute name="body" value="/WEB-INF/tiles/post_body.jsp" />
     </definition>
             
-    <definition name="403" extends="common">
+    <definition name="4032" extends="common">
         <put-attribute name="title" value="SimpleBlog by Maku :: Odmowa dostępu" />
         <put-attribute name="body" value="/WEB-INF/tiles/403.jsp" />
     </definition>
     
-    <definition name="contact" extends="common">
+    <definition name="contact2" extends="common">
         <put-attribute name="title" value="SimpleBlog by Maku :: Kontakt" />
         <put-attribute name="body" value="/WEB-INF/tiles/contact.jsp" />
     </definition>
+    
+    
+    
+    
     
     
     <definition name="index" template="/WEB-INF/tiles/template.jsp">
@@ -100,6 +104,69 @@
         <put-attribute name="footer" value="/WEB-INF/tiles/footer.jsp" />
     </definition>
     
+    <definition name="search" extends="index">
+        <put-attribute name="title" value="FootballBlog :: Wyniki wyszukiwania" />
+        <put-attribute name="content" value="/WEB-INF/tiles/search.jsp" />
+    </definition>
     
+    <definition name="login" extends="index">
+        <put-attribute name="title" value="FootballBlog by Maku :: Zaloguj" />
+        <put-attribute name="content" value="/WEB-INF/tiles/login.jsp" />
+    </definition>
+    
+    <definition name="users" extends="index">
+        <put-attribute name="title" value="FootballBlog by Maku :: Użytkownicy" />
+        <put-attribute name="content" value="/WEB-INF/tiles/users.jsp" />
+    </definition>
+    
+    <definition name="register" extends="index">
+        <put-attribute name="title" value="FootballBlog by Maku :: Rejestracja użytkownika" />
+        <put-attribute name="content" value="/WEB-INF/tiles/register.jsp" />
+    </definition>
+    
+    <definition name="user" extends="index">
+        <put-attribute name="title" value="FootballBlog :: Profil użytkownika" />
+        <put-attribute name="content" value="/WEB-INF/tiles/user.jsp" />
+    </definition>
+    
+    <definition name="post" extends="index">
+        <put-attribute name="title" value="FootballBlog :: Post" />
+        <put-attribute name="content" value="/WEB-INF/tiles/post.jsp" />
+    </definition>
+    
+    <definition name="403" extends="index">
+        <put-attribute name="title" value="FootballBlog :: Odmowa dostępu" />
+        <put-attribute name="content" value="/WEB-INF/tiles/403.jsp" />
+    </definition>
+    
+    <definition name="admin" extends="index">
+        <put-attribute name="title" value="FootballBlog :: Panel admina" />
+        <put-attribute name="content" value="/WEB-INF/tiles/admin.jsp" />
+    </definition>
+    
+    <definition name="addpost" extends="index">
+        <put-attribute name="title" value="FootballBlog :: Nowy post" />
+        <put-attribute name="content" value="/WEB-INF/tiles/addpost.jsp" />
+    </definition>
+    
+    <definition name="admin_posts" extends="index">
+        <put-attribute name="title" value="FootballBlog :: Panel admina :: Lista postów" />
+        <put-attribute name="content" value="/WEB-INF/tiles/admin_posts.jsp" />
+    </definition>
+    
+    <definition name="admin_users" extends="index">
+        <put-attribute name="title" value="FootballBlog :: Panel admina :: Lista użytkowników" />
+        <put-attribute name="content" value="/WEB-INF/tiles/admin_users.jsp" />
+    </definition>
+    
+    <definition name="contact" extends="index">
+        <put-attribute name="title" value="FootballBlog :: Kontakt" />
+        <put-attribute name="content" value="/WEB-INF/tiles/contact.jsp" />
+    </definition>
+    
+    <definition name="upload" extends="index">
+        <put-attribute name="title" value="FootballBlog :: Upload" />
+        <put-attribute name="content" value="/WEB-INF/tiles/upload.jsp" />
+    </definition>
     
 </tiles-definitions>

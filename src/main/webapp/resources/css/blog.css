@@ -56,6 +56,17 @@ h5 {
     height: 400px;
 }
 
+#addpost {
+    margin-top: 75px;
+    padding: 2em;
+    min-height: 400px;
+}
+
+#addcommentform {
+    padding: 2em;
+    border: 0px;
+}
+
 #user {
     padding: 1.5em;
     min-height: 500px;

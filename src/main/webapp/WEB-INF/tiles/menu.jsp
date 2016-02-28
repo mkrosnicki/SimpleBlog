@@ -18,14 +18,14 @@
 
             <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1" style="padding: 0px">
                 <ul class="nav navbar-nav">
-                    <li><a href="">Strona główna</a></li>
+                    <li><a href="<c:url value="/" />">Strona główna</a></li>
                     <li><a href="<c:url value="/users" />">Użytkownicy</a></li>
                     <li><a href="<c:url value="/contact" />">Kontakt</a></li>
                     <c:if test="${isUserLogged}">
-                        <li><a href="#">Twoje konto</a></li>
+                        <li><a href="${appContextPath}/user/${loggedUserId}">Twoje konto</a></li>
                     </c:if>
                     <c:if test="${isAdminLogged}">
-                        <li><a href="#">Panel admina</a></li>
+                        <li><a href="<c:url value="/admin" />">Panel admina</a></li>
                     </c:if>
                 </ul>
                 <form class="navbar-form navbar-left pull-right" style="padding: 0px" role="search" action="<c:url value="/search"/>">

@@ -36,8 +36,9 @@ public class HomeController {
     public ModelAndView showSearchResults(@RequestParam(value = "q") String phrase) {
         ModelAndView model = new ModelAndView();
         List<Post> posts = postService.findPostsWhichContains(phrase);
-        if (posts.size() == 0) 
+        if (posts.size() == 0) {
             model.addObject("noResults", true);
+        }
         model.addObject("posts", posts);
         model.setViewName("search");
         return model;
@@ -46,6 +47,16 @@ public class HomeController {
     @RequestMapping(value = "/403", method = RequestMethod.GET)
     public String showErrorPage() {
         return "403";
+    }
+
+    @RequestMapping(value = "/login", method = RequestMethod.GET)
+    public String showLoginPage() {
+        return "login";
+    }
+
+    @RequestMapping(value = "/upload", method = RequestMethod.GET)
+    public String showUploadPage() {
+        return "upload";
     }
 
     @RequestMapping(value = "/contact", method = RequestMethod.GET)

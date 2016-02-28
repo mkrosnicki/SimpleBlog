@@ -32,7 +32,7 @@
 </div>
 <hr />
 <div id="addCommentForm" class="well" style="display: none">
-    <form:form modelAttribute="comment" cssClass="form-horizontal">
+    <form:form modelAttribute="comment" cssClass="form-horizontal" method="POST">
         <form:textarea path="text" cssClass="form-control" cssStyle="resize: none; height: 100px" placeholder="Treść komentarza" />
         <input type="submit" class="btn btn-primary" value="Dodaj" />
     </form:form>

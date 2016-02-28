@@ -48,7 +48,7 @@ public class AdminController {
         System.out.println(userService.getAll().get(0).getRoles());
         ModelAndView model = new ModelAndView();
         model.addObject("users", userService.getAll());
-        model.setViewName("users");
+        model.setViewName("admin_users");
         return model;
     }
 
@@ -56,7 +56,7 @@ public class AdminController {
     public ModelAndView showPosts() {
         ModelAndView model = new ModelAndView();
         model.addObject("posts", postService.getAll());
-        model.setViewName("posts");
+        model.setViewName("admin_posts");
         return model;
     }
 
@@ -114,14 +114,14 @@ public class AdminController {
 //        return "redirect:/";
 //    }
     
-    @RequestMapping(value = "/delete/{id}")
+    @RequestMapping(value = "posts/delete/{id}")
     public String deletePost(@PathVariable("id") Long id, RedirectAttributes attributes) {
         postService.delete(id);
         attributes.addFlashAttribute("message", "Pomyślnie usunięto post!");
         return "redirect:/admin/posts";
     }
 
-    @RequestMapping(value = "/edit/{id}", method = RequestMethod.GET)
+    @RequestMapping(value = "posts/edit/{id}", method = RequestMethod.GET)
     public ModelAndView editPost(@PathVariable("id") Long id) {
         ModelAndView model = new ModelAndView();
         System.out.println(postService.getById(id) == null);

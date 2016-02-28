@@ -47,7 +47,7 @@ public class UserController {
         ModelAndView model = new ModelAndView();
         List<User> users = userService.getSortedByName();
         model.addObject("users", users);
-        model.setViewName("main_users");
+        model.setViewName("users");
         return model;
     }
 

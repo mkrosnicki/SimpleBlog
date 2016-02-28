@@ -9,12 +9,16 @@
         <c:choose>
             <c:when test="${isUserLogged}">
                 <div class="col-md-3 col-sm-3 col-xs-3" style="padding-top: 5em; text-align: right">
-                    <h5>Witaj, <a href="#">maku</a>!</h5>
+                    <h5>Witaj, <a href="${appContextPath}/user/${loggedUserId}">${loggedUserName}</a>!</h5>
                 </div>
                 <div class="col-md-1 col-sm-1 col-xs-1" style="padding-top: 5em">
-                    <div class="pull-right form-group form-inline">
-                        <button class="btn btn-danger pull-right">Wyloguj</button>
-                    </div>
+                    <form action="${appContextPath}/logout" method="post" id="logoutForm">
+                        <input type="hidden"
+                               name="${_csrf.parameterName}"
+                               value="${_csrf.token}" />
+                        <button type="submit" class="btn btn-danger pull-right">Wyloguj</button>
+                    </form>
+
                 </div>
             </c:when>
             <c:otherwise>
