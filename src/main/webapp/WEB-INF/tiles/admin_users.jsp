@@ -34,7 +34,7 @@
                         </tr>
                         <tr>
                             <td>Data rejestracji</td>
-                            <td>narazie brak</td>
+                            <td>${user.dateOfRegister}</td>
                             <td>
                                 <button class="btn btn-danger pull-right">Zablokuj</button>
                                 <button class="btn btn-success pull-right">Zmień uprawnienia</button>

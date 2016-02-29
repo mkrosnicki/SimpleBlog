@@ -24,7 +24,7 @@
                 Autor : <a href="${appContextPath}/user/${post.poster.id}">${post.poster.name}</a>
             </div>
             <div class="col-md-9">
-                Data dodania : ${post.dateOfPublish}
+                Ostatnia edycja : ${post.dateOfPublish}
             </div>
         </div>
         <br />
@@ -71,7 +71,7 @@
                         <img src="${appContextPath}/resources/upload/${post.poster.imageName}" class="img img-circle" style="width: 40px; height: 40px;" />
                         <br />
                         <br />
-                        <a href="${appContextPath}/user/${comment.publisher.id}">maku</a>
+                        <a href="${appContextPath}/user/${comment.publisher.id}">${comment.publisher.name}</a>
                     </td>
                     <td class="text-justify col-md-9">
                         ${comment.dateOfPublish}

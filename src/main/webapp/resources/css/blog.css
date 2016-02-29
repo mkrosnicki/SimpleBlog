@@ -53,7 +53,13 @@ h5 {
 #login {
     margin-top: 75px;
     padding: 2em;
-    height: 400px;
+    min-height: 400px;
+}
+
+#register {
+    margin-top: 75px;
+    padding: 2em;
+    min-height: 400px;
 }
 
 #addpost {

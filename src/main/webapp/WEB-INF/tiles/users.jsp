@@ -32,7 +32,7 @@
                         </tr>
                         <tr>
                             <td>Data rejestracji</td>
-                            <td>narazie brak</td>
+                            <td>${user.dateOfRegister}</td>
                             <td>
                                 <a href="user/${user.id}"><button class="btn btn-success pull-right">Zobacz profil</button></a>
                             </td>

@@ -35,7 +35,7 @@ import org.springframework.web.multipart.MultipartFile;
 public class User implements Serializable {
 
     @Transient
-    public static final String DEFAULT_IMAGE_NAME = "default_user.jpg";
+    public static final String DEFAULT_IMAGE_NAME = "user_default.jpg";
 
     @Id
     @Column(name = "user_id")
@@ -53,14 +53,14 @@ public class User implements Serializable {
     private String repeatPassword;
 
     @Temporal(TemporalType.DATE)
-    @Column(name = "date")
+    @Column(name = "dateOfRegister")
     private Date dateOfRegister;
 
     @Type(type = "boolean")
     private boolean enabled = true;
 
     @OneToMany(mappedBy = "user")
-    private List<Comment> comments;
+    private List<Comment> comments = new ArrayList<>();
 
     @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(
@@ -72,10 +72,10 @@ public class User implements Serializable {
                 @JoinColumn(name = "authority", referencedColumnName = "authority")
             }
     )
-    private List<Role> roles;
+    private List<Role> roles = new ArrayList<>();
 
     @OneToMany(mappedBy = "user")
-    private List<Post> posts;
+    private List<Post> posts = new ArrayList<>();
 
     @Transient
     private MultipartFile image;

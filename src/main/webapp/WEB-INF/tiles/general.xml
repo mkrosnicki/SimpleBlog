@@ -53,7 +53,7 @@
         <put-attribute name="body" value="/WEB-INF/tiles/addpost_body.jsp" />
     </definition>
     
-    <definition name="editpost" extends="common">
+    <definition name="editpost2" extends="common">
         <put-attribute name="title" value="SimpleBlog by Maku :: Edycja posta" />
         <put-attribute name="body" value="/WEB-INF/tiles/editpost_body.jsp" />
     </definition>
@@ -167,6 +167,16 @@
     <definition name="upload" extends="index">
         <put-attribute name="title" value="FootballBlog :: Upload" />
         <put-attribute name="content" value="/WEB-INF/tiles/upload.jsp" />
+    </definition>
+    
+    <definition name="editpost" extends="index">
+        <put-attribute name="title" value="FootballBlog :: Edycja posta" />
+        <put-attribute name="content" value="/WEB-INF/tiles/editpost.jsp" />
+    </definition>
+    
+    <definition name="changepassword" extends="index">
+        <put-attribute name="title" value="FootballBlog :: Zmiana hasła" />
+        <put-attribute name="content" value="/WEB-INF/tiles/changepassword.jsp" />
     </definition>
     
 </tiles-definitions>

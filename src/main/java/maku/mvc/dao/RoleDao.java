@@ -3,6 +3,7 @@ package maku.mvc.dao;
 import javax.persistence.EntityManager;
 import javax.persistence.NoResultException;
 import javax.persistence.PersistenceContext;
+import javax.persistence.PersistenceContextType;
 import maku.mvc.entities.Role;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
@@ -14,7 +15,7 @@ public class RoleDao {
     private final String ROLE_BY_AUTHORITY = "SELECT r FROM Role r WHERE r.authority = :authority";
     private final String DELETE_ALL_ROLES = "DELETE FROM Role";
 
-    @PersistenceContext
+    @PersistenceContext(name = "persistenceUnit", type = PersistenceContextType.EXTENDED)
     private EntityManager em;
 
     public Role getById(Long id) {

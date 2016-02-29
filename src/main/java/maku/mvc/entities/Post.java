@@ -33,23 +33,25 @@ import org.springframework.web.multipart.MultipartFile;
 })
 public class Post implements Serializable, Comparable<Post> {
 
+    public static final String IMAGE_DEFAULT_NAME = "post_default.jpg";
+    
     @Id
     @Column(name = "post_id")
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
     @Column(name = "title", unique = true)
-    @Size(min = 3, max = 30)
+    @Size(min = 1, max = 80)
     private String title;
 
     @Column(name = "text", columnDefinition = "TEXT")
     private String text;
     
     @Temporal(TemporalType.DATE)
-    @Column(name = "date")
+    @Column(name = "dateOfPublish")
     private Date dateOfPublish;
 
-    @OneToMany(mappedBy = "post")
+    @OneToMany(mappedBy = "post", cascade = {CascadeType.REMOVE, CascadeType.MERGE})
     private List<Comment> comments;
 
     @ManyToOne(cascade = {CascadeType.MERGE})
@@ -59,7 +61,7 @@ public class Post implements Serializable, Comparable<Post> {
     @Transient
     private MultipartFile image;
 
-    private String imageName;
+    private String imageName = IMAGE_DEFAULT_NAME;
 
     public Long getId() {
         return id;

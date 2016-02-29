@@ -1,6 +1,5 @@
 package maku.mvc.controllers;
 
-import java.util.Date;
 import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
@@ -10,11 +9,15 @@ import maku.mvc.constants.Constants;
 import maku.mvc.entities.Post;
 import maku.mvc.entities.Role;
 import maku.mvc.entities.User;
+import maku.mvc.exceptions.PasswordNotValidException;
+import maku.mvc.exceptions.UserNotValidException;
+import maku.mvc.handlers.PasswordFormHandler;
 import maku.mvc.services.CommentService;
 import maku.mvc.services.ImageService;
 import maku.mvc.services.PostService;
 import maku.mvc.services.RoleService;
 import maku.mvc.services.UserService;
+import maku.mvc.validators.PasswordFormValidator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -62,30 +65,21 @@ public class UserController {
             BindingResult result,
             Model model,
             RedirectAttributes attributes,
-            HttpSession session,
-            @RequestParam(value = "image", required = false) MultipartFile image) {
+            HttpSession session) {
 
         if (result.hasErrors()) {
             model.addAttribute("registerError", "Niepoprawnie wypełnione pola :");
             return "register";
         }
-        if (userService.getByName(user.getName()) != null) {
-            model.addAttribute("registerError", Constants.USER_EXISTS_ERROR);
+        try {
+            userService.isUserValidForRegister(user);
+        } catch (UserNotValidException e) {
+            model.addAttribute("registerError", e.getMessage());
             return "register";
         }
-        if (!user.getPassword().equals(user.getRepeatPassword())) {
-            model.addAttribute("registerError", Constants.PASSWORDS_DONT_MATCH_ERROR);
-            return "register";
-        }
-        Role role = roleService.getByAuthority(Role.USER);
-        user.setDateOfRegister(new Date());
-        userService.persist(user);
-
-        user.getRoles().add(role);
-        userService.merge(user);
-        attributes.addFlashAttribute("message", "Zarejestrowano nowego użytkownika! Możesz się teraz zalogować.");
-
-        return "redirect:/";
+        userService.registerUser(user);
+        attributes.addFlashAttribute("registerSuccess", "Zarejestrowano nowego użytkownika! Możesz się teraz zalogować.");
+        return "redirect:/login";
     }
 
     @RequestMapping(value = "/user/{userId}", method = RequestMethod.GET)
@@ -98,23 +92,39 @@ public class UserController {
         boolean isAdmin = user.getRoles().stream().anyMatch((Role role) -> (role.getAuthority().equals(Role.USER)));
 
         model.addObject("user", user);
-        if (user.isEnabled()) {
-            model.addObject("status", "Aktywne");
-        } else {
-            model.addObject("status", "Nieaktywne");
-        }
-        if (isAdmin) {
-            model.addObject("userRole", "Admin");
-        } else {
-            model.addObject("userRole", "Użytkownik");
-        }
+        String status = user.isEnabled() ? "Aktywne" : "Nieaktywne";
+        String userRole = user.isEnabled() ? "Admin" : "Użytkownik";
+        model.addObject("status", status);
+        model.addObject("userRole", userRole);
         model.addObject("isAdminUser", isAdmin);
-        if (posts != null) {
-            model.addObject("numberOfPosts", postService.getPostsByUser(user).size());
-        } else {
-            model.addObject("numberOfPosts", 0);
-        }
+        model.addObject("numberOfPosts", postService.getPostsByUser(user).size());
         model.setViewName("user");
+        return model;
+    }
+
+    @RequestMapping(value = "/user/{userId}/changepassword", method = RequestMethod.GET)
+    public String changePassword(Model model) {
+        model.addAttribute("password", new PasswordFormHandler());
+        return "changepassword";
+    }
+
+    @RequestMapping(value = "/user/{userId}/changepassword", method = RequestMethod.POST)
+    public ModelAndView changePasswordForm(@Valid PasswordFormHandler password,
+            @PathVariable Long userId,
+            BindingResult result) {
+        ModelAndView model = new ModelAndView();
+        User user = userService.getById(userId);
+        model.setViewName("changepassword");
+        if (result.hasErrors()) {
+            return model;
+        }
+        try {
+            PasswordFormValidator.valid(user.getPassword(), password);
+        } catch(PasswordNotValidException e) {
+            model.addObject("changePassError", e.getMessage());
+            return model;
+        }
+        model.setViewName("redirect:/user/" + userId);
         return model;
     }
 

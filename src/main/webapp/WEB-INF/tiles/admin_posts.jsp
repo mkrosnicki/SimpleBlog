@@ -17,7 +17,7 @@
             <table class="table text-center block-center table-vcenter" id="user2">
 
                 <tr>
-                    <td colspan="4">
+                    <td colspan="5">
                         <h3>Posty</h3>
                     </td>
                 </tr>
@@ -26,10 +26,13 @@
                         <h4>Tytuł</h4>
                     </td>
                     <td>
-                        <h4>Data dodania</h4>
+                        <h4>Ostatnia edycja</h4>
                     </td>
                     <td>
-                        <h4>Edytuj</h4>
+                        <h4>Treść / tytuł</h4>
+                    </td>
+                    <td>
+                        <h4>Obrazek</h4>
                     </td>
                     <td>
                         <h4>Usuń</h4>
@@ -40,10 +43,13 @@
                         <td>${post.title}</td>
                         <td>${post.dateOfPublish}</td>
                         <td>
-                            <a href="edit/${post.id}}"><button class="btn btn-success">Edytuj</button></a>
+                            <a href="edit/post/${post.id}"><button class="btn btn-success">Edytuj</button></a>
                         </td>
                         <td>
-                            <a href="delete/${post.id}}"><button class="btn btn-danger">Usuń</button></a>
+                            <a href="edit/postimage/${post.id}"><button class="btn btn-success">Zmień</button></a>
+                        </td>
+                        <td>
+                            <a href="delete/post/${post.id}"><button class="btn btn-danger">Usuń</button></a>
                         </td>
                     </tr>
 

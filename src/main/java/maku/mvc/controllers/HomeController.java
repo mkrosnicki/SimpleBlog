@@ -25,9 +25,6 @@ public class HomeController {
         List<Post> posts = postService.getSortedByDate();
         Collections.reverse(posts);
         model.addObject("posts", posts);
-        if (error != null) {
-            model.addObject("error", "Niepoprawne dane uzytkownika!");
-        }
         model.setViewName("index");
         return model;
     }
@@ -50,8 +47,13 @@ public class HomeController {
     }
 
     @RequestMapping(value = "/login", method = RequestMethod.GET)
-    public String showLoginPage() {
-        return "login";
+    public ModelAndView showLoginPage(@RequestParam(value = "error", required = false) String error) {
+        ModelAndView model = new ModelAndView();
+        if (error != null) {
+            model.addObject("error", "Niepoprawne dane uzytkownika!");
+        }
+        model.setViewName("login");
+        return model;
     }
 
     @RequestMapping(value = "/upload", method = RequestMethod.GET)

@@ -39,7 +39,7 @@
                 </tr>
                 <tr>
                     <td>Data rejestracji</td>
-                    <td>narazie brak</td>
+                    <td>${user.dateOfRegister}</td>
                 </tr>
 
                 <!-- DLA WŁAŚCICIELA KONTA -->
@@ -52,7 +52,7 @@
                     <tr>
                         <td>Zmień hasło</td>
                         <td>
-                            <a href="${user.id}/update"><button class="btn btn-success pull-right">Zmień</button></a>
+                            <a href="${user.id}/changepassword"><button class="btn btn-success pull-right">Zmień</button></a>
                         </td>
                     </tr>
                     <tr>

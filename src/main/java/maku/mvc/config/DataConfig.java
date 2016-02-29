@@ -50,7 +50,7 @@ public class DataConfig {
     public DataSource dataSource() {
         DriverManagerDataSource dataSource = new DriverManagerDataSource();
         dataSource.setDriverClassName("com.mysql.jdbc.Driver");
-        dataSource.setUrl("jdbc:mysql://localhost:3306/springbaza");
+        dataSource.setUrl("jdbc:mysql://localhost:3306/springbaza?useUnicode=true&characterEncoding=utf8&characterSetResults=utf8&connectionCollation=utf8_general_ci");
         dataSource.setUsername("user");
         dataSource.setPassword("password");
         return dataSource;
@@ -66,6 +66,9 @@ public class DataConfig {
         properties.setProperty("hibernate.hbm2ddl.auto", "create-drop");
         properties.setProperty("hibernate.dialect", "org.hibernate.dialect.MySQL5Dialect");
         properties.setProperty("hibernate.hbm2ddl.import_files", "import.sql");
+        properties.setProperty("hibernate.connection.useUnicode", "true");
+        properties.setProperty("hibernate.connection.characterEncoding", "UTF-8");
+        properties.setProperty("hibernate.connection.characterSetResults", "UTF-8");
         return properties;
     }
 

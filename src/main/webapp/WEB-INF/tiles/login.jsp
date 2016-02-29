@@ -30,8 +30,13 @@
                 <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
             </form>
             <a href="./register"><button class="btn btn-danger" style="width: 100%">Załóż konto</button></a>
+            <br />
+            <br />
             <c:if test="${error ne null}">
-                <div class="alert alert-danger">${error}</div>
+                <div class="alert alert-danger text-center">${error}</div>
+            </c:if>
+            <c:if test="${registerSuccess ne null}">
+                <div class="alert alert-success text-center">${registerSuccess}</div>
             </c:if>
         </div>
     </div>
